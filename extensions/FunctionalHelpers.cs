@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonSenseCSharp.datastructures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,15 @@ public static class FunctionalHelpers {
         }
         return result;
     }
+
+    public static NonNullList<U> FlatMap<U, T>(this IEnumerable<T> input, Func<T, U> generator) {
+        var result = new NonNullList<U>(input.Count());
+        foreach (var item in input) {
+            result.Add(generator(item));
+        }
+        return result;
+    }
+
     /// <summary>
     /// Performs and action over a IEnumerable (given an action.) 
     /// </summary>
@@ -30,6 +40,23 @@ public static class FunctionalHelpers {
             onEach(item);
         }
     }
+
+    public static void FlatForeach<T>(this IEnumerable<T> list, Action<T> onEach) {
+        foreach (var item in list) {
+            if (item != null) {
+                onEach(item);
+            }
+        }
+    }
+
+    public static void FlatForeach<T, V>(this IEnumerable<T> list, Func<T, V> onEach) {
+        foreach (var item in list) {
+            if (item != null) {
+                onEach(item);
+            }
+        }
+    }
+
 
     /// <summary>
     /// Performs and action over a IEnumerable (given a function) ignoring the result of a function
@@ -51,10 +78,21 @@ public static class FunctionalHelpers {
     /// <param name="times"></param>
     /// <param name="callback"></param>
     public static void PerformEachTime(this int times, Action<int> callback) {
-        for (var i = 0; i < times; i++) {
+        0.PerformTimes(times, callback);
+    }
+
+    /// <summary>
+    /// Performs the given action each time starting from start; count times.
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="count"></param>
+    /// <param name="callback"></param>
+    public static void PerformTimes(this int start, int count, Action<int> callback) {
+        for (int i = start; i < start + count; i++) {
             callback(i);
         }
     }
+
     /// <summary>
     /// Performs a task the given number of times unless the function returns true. 
     /// </summary>
@@ -69,6 +107,26 @@ public static class FunctionalHelpers {
         }
         return times - 1;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="times"></param>
+    /// <param name="callback"></param>
+    /// <param name="shouldReturn"></param>
+    /// <param name="atEnd"></param>
+    /// <returns></returns>
+    public static T PerformEachTimeUntil<T>(this int times, Func<int, T> callback, Func<T,bool> shouldReturn, T atEnd) {
+        for (var i = 0; i < times; i++) {
+            var tempRes = callback(i);
+            if (shouldReturn(tempRes)) {
+                return tempRes;
+            }
+        }
+        return atEnd;
+    }
+
     /// <summary>
     /// Performs an action if a value is true.
     /// </summary>
@@ -94,6 +152,18 @@ public static class FunctionalHelpers {
         return result;
     }
     /// <summary>
+    /// Flatterns a list (in i a  list) to a list by moving all elements in the depth into the same list. 
+    /// </summary>
+    /// <typeparam name="U"></typeparam>
+    /// <param name="collection"></param>
+    /// <returns></returns>
+    public static NonNullList<U> FlatFlattern<U>(this IEnumerable<IEnumerable<U>> collection) {
+        var result = new NonNullList<U>(collection.Count());
+        collection.Foreach(result.AddRange);
+        return result;
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="U"></typeparam>
@@ -105,5 +175,31 @@ public static class FunctionalHelpers {
         collection.Foreach(x => { if (includeItem(x)) { result.Add(x); } });
         return result;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="U"></typeparam>
+    /// <param name="collection"></param>
+    /// <param name="includeItem"></param>
+    /// <returns></returns>
+    public static NonNullList<U> FlatFilter<U>(this IEnumerable<U> collection, Func<U, bool> includeItem) {
+        var result = new NonNullList<U>(collection.Count());
+        collection.Foreach(x => { if (includeItem(x)) { result.Add(x); } });
+        return result;
+    }
+
+
+    public static NonNullList<T> FlatTakeFrom<T>(this IEnumerable<int> indexes, IEnumerable<T> collectionToTakeFrom) {
+        var result = new NonNullList<T>();
+        int max = collectionToTakeFrom.Count();
+        foreach (var item in indexes) {
+            if (item < max && item >= 0) { //in range
+                result.Add(collectionToTakeFrom.ElementAt(item));//add (iff not null, inforced by collection).
+            }
+        }
+        return result;
+    }
+
 
 }
