@@ -5,36 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommonSenseCSharp.naturalSorting {
-    public class NaturalSorter {
-
-    }
-
-
-    public class testMe {
-        public static void tryMe() {
-            NonNullList<testData> data = new NonNullList<testData>();
-            data.Add(new testData { asd = "X10 y100", whatsUp = 323 }, new testData { asd = "x9Y100", whatsUp = 23 }, new testData { asd = "x9 y120", whatsUp = 213 });
-            var lst = data.SortNatural(x => { return x.asd; });
-
-            Console.WriteLine("wee");
-
-        }
-
-        private class testData {
-            public int whatsUp { get; set; }
-            public string asd { get; set; }
-
-        }
-    }
-
-}
-
-
 public static class NaturalSort {
 
     public static NonNullList<T> SortNatural<T>(this NonNullList<T> list, Func<T, string> extractor) {
-        var newLst = list.FlatMap(x => { return new internalStructure<T>(x, extractor(x)); });
+        return list.FlatMap(x => { return new internalStructure<T>(x, extractor(x)); }).sortInternalStructure();
+    }
+
+    public static NonNullList<string> SortNatural(this IEnumerable<string> list) {
+        return list.FlatMap(x => { return new internalStructure<string>(x, x); }).sortInternalStructure();
+    }
+    private static NonNullList<T> sortInternalStructure<T>(this NonNullList<internalStructure<T>> newLst) {
         newLst.Sort((lhs, rhs) => lhs.CompareTo(rhs));
         return newLst.FlatMap(x => x.GetObj());
     }

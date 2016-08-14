@@ -27,7 +27,7 @@ namespace CommonSenseCSharp.datastructures {
         }
 
         public NonNullList(int capacity) : base(capacity) {
-           
+
         }
 
         /// <summary>
@@ -40,8 +40,19 @@ namespace CommonSenseCSharp.datastructures {
             }
         }
 
-        public void Add(params T[] items ) {
+        public void Add(params T[] items) {
             items.Foreach(Add);
+        }
+
+        public void RemoveLast() {
+            if (Count > 0) {
+                RemoveAt(Count - 1);
+            }
+        }
+        public void RemoveFirst() {
+            if (Count > 0) {
+                RemoveAt(0);
+            }
         }
 
         /// <summary>
