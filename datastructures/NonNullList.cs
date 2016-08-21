@@ -44,15 +44,17 @@ namespace CommonSenseCSharp.datastructures {
             items.Foreach(Add);
         }
 
-        public void RemoveLast() {
+        public NonNullList<T> RemoveLast() {
             if (Count > 0) {
                 RemoveAt(Count - 1);
             }
+            return this;
         }
-        public void RemoveFirst() {
+        public NonNullList<T> RemoveFirst() {
             if (Count > 0) {
                 RemoveAt(0);
             }
+            return this;
         }
 
         /// <summary>
