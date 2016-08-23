@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 public static class StringBuilderExtensions {
     /// <summary>
@@ -27,5 +24,10 @@ public static class StringBuilderExtensions {
                 .Insert(index, replace ?? "");
     }
 
+
+    public static StringBuilder Append(this StringBuilder builder, params string[] items) {
+        items.FlatForeach(builder.Append);
+        return builder;
+    }
 
 }

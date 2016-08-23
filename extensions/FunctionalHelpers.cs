@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 public static class FunctionalHelpers {
     /// <summary>
@@ -27,6 +26,32 @@ public static class FunctionalHelpers {
             result.Add(generator(item));
         }
         return result;
+    }
+
+
+    public static NonNullList<U> FlatMapWithGlue<U, T>(this IEnumerable<T> input, Func<T, U> map, Func<U, U> glue) {
+        var result = new NonNullList<U>();
+        input.FlatForeachWithGlue(x => { result.Add(glue(map(x))); },
+            null,
+            x => { result.Add(map(x)); });
+        return result;
+    }
+    public static void FlatForeachWithGlue<T>(this IEnumerable<T> input, Action<T> foreachCall, Action<T> glue) {
+        input.FlatForeachWithGlue(foreachCall, glue, foreachCall);
+    }
+
+    public static void FlatForeachWithGlue<T>(this IEnumerable<T> input, Action<T> foreachCall, Action<T> glue, Action<T> last) {
+        var safeInput = new NonNullList<T>(input);
+        var lenght = safeInput.Count();
+        if (lenght <= 0) {
+            return;
+        }
+        for (int i = 0; i < lenght - 1; i++) {
+            var item = safeInput.ElementAt(i);
+                foreachCall?.Invoke(item);
+                glue?.Invoke(item);
+        }
+        last?.Invoke(safeInput.Last());
     }
 
     /// <summary>
@@ -117,7 +142,7 @@ public static class FunctionalHelpers {
     /// <param name="shouldReturn"></param>
     /// <param name="atEnd"></param>
     /// <returns></returns>
-    public static T PerformEachTimeUntil<T>(this int times, Func<int, T> callback, Func<T,bool> shouldReturn, T atEnd) {
+    public static T PerformEachTimeUntil<T>(this int times, Func<int, T> callback, Func<T, bool> shouldReturn, T atEnd) {
         for (var i = 0; i < times; i++) {
             var tempRes = callback(i);
             if (shouldReturn(tempRes)) {

@@ -1,9 +1,6 @@
-﻿using CommonSenseCSharp.datastructures;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace CommonSenseCSharp.datastructures {
     [Serializable]
@@ -25,14 +22,25 @@ namespace CommonSenseCSharp.datastructures {
                 base.SetItem(index,item);
             }
         }
+        public ObservableNonNullCollectionRange() {
 
+        }
+        protected ObservableNonNullCollectionRange(SerializationInfo info, StreamingContext context) {
+            try {
+                this.ClearAndAddAll((IList<T>)info.GetValue("data", typeof(IList<T>)));
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+   
         #region range features
         public new void AddAll(IEnumerable<T> list) {
             base.AddAll(list.Filter(x => x != null));
         }
 
         public new void ClearAndAddAll(IEnumerable<T> list) {
-            base.Items.Clear();
+            Items.Clear();
             AddAll(list);
         }
 

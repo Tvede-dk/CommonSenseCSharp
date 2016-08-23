@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommonSenseCSharp.datastructures {
     /// <summary>
@@ -20,7 +18,7 @@ namespace CommonSenseCSharp.datastructures {
         }
 
         public ObservableCollectionRange(IEnumerable<T> data) {
-            AddAll(data);
+            this.AddAll(data);
         }
         #endregion
 
@@ -50,7 +48,7 @@ namespace CommonSenseCSharp.datastructures {
         /// <param name="context"></param>
         protected ObservableCollectionRange(SerializationInfo info, StreamingContext context) {
             try {
-                ClearAndAddAll((IList<T>)info.GetValue("data", typeof(IList<T>)));
+                this.ClearAndAddAll((IList<T>)info.GetValue("data", typeof(IList<T>)));
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
@@ -61,7 +59,7 @@ namespace CommonSenseCSharp.datastructures {
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
             info.AddValue("data", this.Items);
         }
         #endregion

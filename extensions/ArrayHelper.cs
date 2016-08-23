@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 public static class ArrayUtil {
@@ -48,13 +46,23 @@ public static class ArrayUtil {
 
 public static class DictonaryUtil {
 
-    public static T GetSafe<T, K>(this Dictionary<K, T> dict, K lookup) {
+
+    public static T GetSafe<T, K>(this Dictionary<K, T> dict, K lookup, T fallback = default(T)) {
 
         if (dict != null && lookup != null) {
             if (dict.ContainsKey(lookup)) {
                 return dict[lookup];
             }
         }
-        return default(T);
+        return fallback;
+    }
+
+    public static Dictionary<K, T> AddF<K, T>(this Dictionary<K, T> dict, K key, T value) {
+        dict.Add(key, value);
+        return dict;
+    }
+    public static Dictionary<string, T> RemoveAll<T>(this Dictionary<string, T> dict, params string[] toRemove) {
+        toRemove.FlatForeach(dict.Remove);
+        return dict;
     }
 }

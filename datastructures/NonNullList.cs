@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommonSenseCSharp.datastructures {
 
@@ -62,7 +58,7 @@ namespace CommonSenseCSharp.datastructures {
         /// </summary>
         /// <param name="collection"></param>
         public new void AddRange(IEnumerable<T> collection) {
-            collection.FlatForeach(base.Add);
+            collection.FlatForeach(Add);
         }
         [Pure]
         public NonNullList<T> GetSafeRange(int index, int count) {
