@@ -1,6 +1,7 @@
 ﻿using CommonSenseCSharp.datastructures;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 public static class FunctionalHelpers {
@@ -23,7 +24,9 @@ public static class FunctionalHelpers {
     public static NonNullList<U> FlatMap<U, T>(this IEnumerable<T> input, Func<T, U> generator) {
         var result = new NonNullList<U>(input.Count());
         foreach (var item in input) {
-            result.Add(generator(item));
+            if (item != null) {
+                result.Add(generator(item));
+            }
         }
         return result;
     }
@@ -46,10 +49,10 @@ public static class FunctionalHelpers {
         if (lenght <= 0) {
             return;
         }
-        for (int i = 0; i < lenght - 1; i++) {
+        for (var i = 0; i < lenght - 1; i++) {
             var item = safeInput.ElementAt(i);
-                foreachCall?.Invoke(item);
-                glue?.Invoke(item);
+            foreachCall?.Invoke(item);
+            glue?.Invoke(item);
         }
         last?.Invoke(safeInput.Last());
     }
@@ -113,7 +116,7 @@ public static class FunctionalHelpers {
     /// <param name="count"></param>
     /// <param name="callback"></param>
     public static void PerformTimes(this int start, int count, Action<int> callback) {
-        for (int i = start; i < start + count; i++) {
+        for (var i = start; i < start + count; i++) {
             callback(i);
         }
     }
@@ -217,7 +220,7 @@ public static class FunctionalHelpers {
 
     public static NonNullList<T> FlatTakeFrom<T>(this IEnumerable<int> indexes, IEnumerable<T> collectionToTakeFrom) {
         var result = new NonNullList<T>();
-        int max = collectionToTakeFrom.Count();
+        var max = collectionToTakeFrom.Count();
         foreach (var item in indexes) {
             if (item < max && item >= 0) { //in range
                 result.Add(collectionToTakeFrom.ElementAt(item));//add (iff not null, inforced by collection).

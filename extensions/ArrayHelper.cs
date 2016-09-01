@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 
 public static class ArrayUtil {
 
     public static void ForEach<Ta, Tb>(IEnumerable<Ta> firstList, IEnumerable<Tb> secoundList, Action<Ta, Tb> onEach) {
+        Contract.Requires(firstList != null);
         if (firstList == null || secoundList == null && onEach == null) {
             return;
         }

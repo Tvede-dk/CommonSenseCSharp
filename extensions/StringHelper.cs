@@ -24,6 +24,11 @@ public static class StringBuilderExtensions {
                 .Insert(index, replace ?? "");
     }
 
+    public static int IntValue(this string str) {
+        var temp = 0;
+        int.TryParse(str, out temp);
+        return temp;
+    }
 
     public static StringBuilder Append(this StringBuilder builder, params string[] items) {
         items.FlatForeach(builder.Append);

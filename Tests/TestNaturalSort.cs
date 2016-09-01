@@ -25,8 +25,8 @@ namespace Tests {
         [TestMethod]
         public void TestLongSort() {
             var lst = new NonNullList<string>();
-            Random rand1 = new Random();
-            Random rand2 = new Random();
+            var rand1 = new Random();
+            var rand2 = new Random();
 
             5000.PerformEachTime(x =>
             {

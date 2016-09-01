@@ -93,6 +93,10 @@ namespace CommonSenseCSharp.datastructures {
         public override int GetHashCode() {
             return base.GetHashCode();
         }
+
+        public T ElementAt(object item) {
+            throw new NotImplementedException();
+        }
         #endregion
 
     }

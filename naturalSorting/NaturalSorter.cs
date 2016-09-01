@@ -10,7 +10,7 @@ public static class NaturalSort {
     }
 
     public static NonNullList<string> SortNatural(this IEnumerable<string> list) {
-        return list.FlatMap(x => { return new internalStructure<string>(x, x); }).sortInternalStructure();
+        return list?.FlatMap(x => { return new internalStructure<string>(x, x); }).sortInternalStructure() ?? new NonNullList<string>();
     }
     private static NonNullList<T> sortInternalStructure<T>(this NonNullList<internalStructure<T>> newLst) {
         newLst.Sort((lhs, rhs) => lhs.CompareTo(rhs));
@@ -33,9 +33,9 @@ public static class NaturalSort {
 
         private void parseValue() {
             var builder = new StringBuilder();
-            int startIndex = 0;
+            var startIndex = 0;
             var isString = true;
-            for (int i = 0; i < value.Length; i++) {
+            for (var i = 0; i < value.Length; i++) {
                 if (char.IsWhiteSpace(value, i)) {
                     continue;
                 }
@@ -86,7 +86,7 @@ public static class NaturalSort {
 
             public int CompareTo(TypeContent other) {
                 if (isNumber) {
-                    return other.isNumber ? int.Parse(stringValue).CompareTo(int.Parse(other.stringValue)) : 1; //if number, compare as such, else the other one wins
+                    return other.isNumber ? stringValue.IntValue().CompareTo(other.stringValue.IntValue()) : 1; //if number, compare as such, else the other one wins
                 } else {
                     return other.isNumber ? -1 : string.Compare(stringValue, other.stringValue, true); // if number,  we win (as string), otherwise, compare both as strings.
                 }
