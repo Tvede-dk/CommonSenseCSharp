@@ -94,8 +94,8 @@ namespace CommonSenseCSharp.datastructures {
             return base.GetHashCode();
         }
 
-        public T ElementAt(object item) {
-            throw new NotImplementedException();
+        public T ElementAt(int index) {
+            return Items[index];
         }
         #endregion
 
