@@ -66,7 +66,7 @@ namespace CommonSenseCSharp.datastructures {
 
         #region Equals and hashcode
 
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -78,13 +78,9 @@ namespace CommonSenseCSharp.datastructures {
             }
             var objLst = obj as ObservableCollectionRange<T>;
             if (objLst != null && objLst.Count == Count) {
-                for (var i = 0; i < objLst.Count; i++) {
-                    var a = objLst.ElementAt(i);
-                    var b = this.ElementAt(i);
-                    if (a == null || !a.Equals(b)) { return false; }
-                }
-                return true;
-
+                bool result = true;
+                ArrayUtil.ForEach(this, objLst, (a, b) => result |= a == null || !a.Equals(b));
+                return result;
             } else {
                 return false;
             }

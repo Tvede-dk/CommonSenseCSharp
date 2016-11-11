@@ -7,7 +7,6 @@ using System.Linq;
 public static class ArrayUtil {
 
     public static void ForEach<Ta, Tb>(IEnumerable<Ta> firstList, IEnumerable<Tb> secoundList, Action<Ta, Tb> onEach) {
-        Contract.Requires(firstList != null);
         if (firstList == null || secoundList == null && onEach == null) {
             return;
         }
@@ -50,7 +49,6 @@ public static class DictonaryUtil {
 
 
     public static T GetSafe<T, K>(this Dictionary<K, T> dict, K lookup, T fallback = default(T)) {
-
         if (dict != null && lookup != null) {
             if (dict.ContainsKey(lookup)) {
                 return dict[lookup];

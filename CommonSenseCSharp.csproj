@@ -90,6 +90,7 @@
     <Compile Include="datastructures\ObservableCollectionRange.cs" />
     <Compile Include="datastructures\ObservableNonNullCollectionRange.cs" />
     <Compile Include="datastructures\SafePair.cs" />
+    <Compile Include="datastructures\UnsafePair.cs" />
     <Compile Include="extensions\ArrayHelper.cs" />
     <Compile Include="extensions\EnumUtil.cs" />
     <Compile Include="extensions\FunctionalHelpers.cs" />

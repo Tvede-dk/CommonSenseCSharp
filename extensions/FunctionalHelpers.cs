@@ -230,4 +230,49 @@ public static class FunctionalHelpers {
     }
 
 
+    /// <summary>
+    /// zips the 2 lists, meaning that element from listA and listB are besides each other, so they form a pair. 
+    /// if any part is null, then that is keept (hereas the name "UnsafePair").
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="U"></typeparam>
+    /// <param name="listA"></param>
+    /// <param name="listB"></param>
+    /// <returns></returns>
+    public static NonNullList<UnsafePair<T, U>> FlatZip<T, U>(this IEnumerable<T> listA, IEnumerable<U> listB) {
+        var result = new NonNullList<UnsafePair<T, U>>();
+        var enA = listA.GetEnumerator();
+        var enB = listB.GetEnumerator();
+        var enAContains = enA.MoveNext();
+        var enBContains = enB.MoveNext();
+        while (enAContains || enBContains) {
+            T a = default(T);
+            U b = default(U);
+            if (enAContains) {
+                a = enA.Current;
+                enAContains = enA.MoveNext();
+            }
+            if (enBContains) {
+                b = enB.Current;
+                enBContains = enB.MoveNext();
+            }
+            result.Add(new UnsafePair<T, U>(a, b));
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// will do the same as zip, except it will chop to the shortest list, and make sure all items are not null.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="U"></typeparam>
+    /// <param name="listA"></param>
+    /// <param name="listB"></param>
+    /// <returns></returns>
+    public static NonNullList<SafePair<T, U>> FlatZipSafe<T, U>(this NonNullList<T> listA, NonNullList<U> listB) {
+        var result = new NonNullList<SafePair<T, U>>(Math.Min(listA.Count(), listB.Count()));
+        ArrayUtil.ForEach(listA, listB, (x, y) => result.Add(new SafePair<T, U>(x, y)));
+        return result;
+    }
+
 }
