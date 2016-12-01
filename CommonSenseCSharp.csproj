@@ -75,6 +75,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325">
+      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -92,6 +95,7 @@
     <Compile Include="datastructures\SafePair.cs" />
     <Compile Include="datastructures\UnsafePair.cs" />
     <Compile Include="extensions\ArrayHelper.cs" />
+    <Compile Include="extensions\DictonaryExtensions.cs" />
     <Compile Include="extensions\EnumUtil.cs" />
     <Compile Include="extensions\FunctionalHelpers.cs" />
     <Compile Include="extensions\HashSet.cs" />

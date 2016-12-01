@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 
 public static class ArrayUtil {
 
-    public static void ForEach<Ta, Tb>(IEnumerable<Ta> firstList, IEnumerable<Tb> secoundList, Action<Ta, Tb> onEach) {
+    public static void ForEach<TA, TB>(IEnumerable<TA> firstList, IEnumerable<TB> secoundList, Action<TA, TB> onEach) {
         if (firstList == null || secoundList == null && onEach == null) {
             return;
         }
@@ -15,7 +14,7 @@ public static class ArrayUtil {
             onEach(firstList.ElementAt(i), secoundList.ElementAt(i));
         }
     }
-    public static void ForEach<Ta, Tb, Tc>(IEnumerable<Ta> firstList, IEnumerable<Tb> secoundList, IEnumerable<Tc> thirdList, Action<Ta, Tb, Tc> onEach) {
+    public static void ForEach<TA, TB, TC>(IEnumerable<TA> firstList, IEnumerable<TB> secoundList, IEnumerable<TC> thirdList, Action<TA, TB, TC> onEach) {
         if (firstList == null || secoundList == null || thirdList == null || onEach == null) {
             return;
         }
@@ -25,7 +24,7 @@ public static class ArrayUtil {
         }
     }
 
-    public static void updateOrInsert<T>(this IList<T> lst, T objToInsert, Func<T, bool> predicate) {
+    public static void UpdateOrInsert<T>(this IList<T> lst, T objToInsert, Func<T, bool> predicate) {
         var i = 0;
         foreach (var item in lst) {
             if (predicate(item)) {
@@ -44,25 +43,3 @@ public static class ArrayUtil {
 
 }
 
-
-public static class DictonaryUtil {
-
-
-    public static T GetSafe<T, K>(this Dictionary<K, T> dict, K lookup, T fallback = default(T)) {
-        if (dict != null && lookup != null) {
-            if (dict.ContainsKey(lookup)) {
-                return dict[lookup];
-            }
-        }
-        return fallback;
-    }
-
-    public static Dictionary<K, T> AddF<K, T>(this Dictionary<K, T> dict, K key, T value) {
-        dict.Add(key, value);
-        return dict;
-    }
-    public static Dictionary<string, T> RemoveAll<T>(this Dictionary<string, T> dict, params string[] toRemove) {
-        toRemove.FlatForeach(dict.Remove);
-        return dict;
-    }
-}

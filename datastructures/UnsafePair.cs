@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CommonSenseCSharp.datastructures {
-    public class UnsafePair<T, U> {
-        public T first { get; set; }
-        public U second { get; set; }
+﻿namespace CommonSenseCSharp.datastructures {
+    public class UnsafePair<T, TU> {
+        public T First { get; set; }
+        public TU Second { get; set; }
 
         public UnsafePair() {
 
         }
-        public UnsafePair(T first, U second) {
-            this.first = first;
-            this.second = second;
+        public UnsafePair(T first, TU second) {
+            this.First = first;
+            this.Second = second;
         }
     }
 }

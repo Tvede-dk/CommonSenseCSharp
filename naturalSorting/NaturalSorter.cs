@@ -6,89 +6,89 @@ using System.Text;
 public static class NaturalSort {
 
     public static NonNullList<T> SortNatural<T>(this NonNullList<T> list, Func<T, string> extractor) {
-        return list.FlatMap(x => { return new internalStructure<T>(x, extractor(x)); }).sortInternalStructure();
+        return list.FlatMap(x => { return new InternalStructure<T>(x, extractor(x)); }).SortInternalStructure();
     }
 
     public static NonNullList<string> SortNatural(this IEnumerable<string> list) {
-        return list?.FlatMap(x => { return new internalStructure<string>(x, x); }).sortInternalStructure() ?? new NonNullList<string>();
+        return list?.FlatMap(x => { return new InternalStructure<string>(x, x); }).SortInternalStructure() ?? new NonNullList<string>();
     }
-    private static NonNullList<T> sortInternalStructure<T>(this NonNullList<internalStructure<T>> newLst) {
+    private static NonNullList<T> SortInternalStructure<T>(this NonNullList<InternalStructure<T>> newLst) {
         newLst.Sort((lhs, rhs) => lhs.CompareTo(rhs));
         return newLst.FlatMap(x => x.GetObj());
     }
 
-    private class internalStructure<T> {
+    private class InternalStructure<T> {
 
-        private T obj;
+        private T _obj;
 
-        private string value;
+        private string _value;
 
-        private readonly NonNullList<TypeContent> order = new NonNullList<TypeContent>();
+        private readonly NonNullList<TypeContent> _order = new NonNullList<TypeContent>();
 
-        public internalStructure(T orgObj, string value) {
-            this.obj = orgObj;
-            this.value = value;
-            parseValue();
+        public InternalStructure(T orgObj, string value) {
+            this._obj = orgObj;
+            this._value = value;
+            ParseValue();
         }
 
-        private void parseValue() {
+        private void ParseValue() {
             var builder = new StringBuilder();
             var startIndex = 0;
             var isString = true;
-            for (var i = 0; i < value.Length; i++) {
-                if (char.IsWhiteSpace(value, i)) {
+            for (var i = 0; i < _value.Length; i++) {
+                if (char.IsWhiteSpace(_value, i)) {
                     continue;
                 }
-                if (char.IsNumber(value, i) == isString) { //iff diffferent, then store the current and change the type.
-                    order.Add(new TypeContent(isString, startIndex, i, this));
+                if (char.IsNumber(_value, i) == isString) { //iff diffferent, then store the current and change the type.
+                    _order.Add(new TypeContent(isString, startIndex, i, this));
                     isString = !isString;
                     builder.Clear();
                     startIndex = i;
                 }
-                builder.Append(value[i]);
+                builder.Append(_value[i]);
             }
 
             if (builder.Length > 0) {
-                order.Add(new TypeContent(isString, startIndex, value.Length, this));
+                _order.Add(new TypeContent(isString, startIndex, _value.Length, this));
             }
 
 
         }
 
-        public int CompareTo(internalStructure<T> rhs) {
-            var minSize = Math.Min(order.Count, rhs.order.Count);
-            var res = minSize.PerformEachTimeUntil(i => order[i].CompareTo(rhs.order[i]), i => i != 0, 0);
-            return res != 0 ? res : order.Count.CompareTo(rhs.order.Count); //if res != 0, return res, otherwise whichever is the smallest of the 2 order lists.
+        public int CompareTo(InternalStructure<T> rhs) {
+            var minSize = Math.Min(_order.Count, rhs._order.Count);
+            var res = minSize.PerformEachTimeUntil(i => _order[i].CompareTo(rhs._order[i]), i => i != 0, 0);
+            return res != 0 ? res : _order.Count.CompareTo(rhs._order.Count); //if res != 0, return res, otherwise whichever is the smallest of the 2 order lists.
         }
 
         public T GetObj() {
-            return obj;
+            return _obj;
         }
 
         struct TypeContent {
-            public bool isNumber { get; set; }
+            public bool IsNumber { get; set; }
 
-            public string stringValue {
+            public string StringValue {
                 get {
-                    return structure.value.Substring(startIndex, endIndex - startIndex);
+                    return _structure._value.Substring(_startIndex, _endIndex - _startIndex);
                 }
             }
-            private internalStructure<T> structure;
-            private int startIndex;
-            private int endIndex;
+            private InternalStructure<T> _structure;
+            private int _startIndex;
+            private int _endIndex;
 
-            public TypeContent(bool isString, int startIndex, int endIndex, internalStructure<T> structure) {
-                this.isNumber = !isString;
-                this.startIndex = startIndex;
-                this.endIndex = endIndex;
-                this.structure = structure;
+            public TypeContent(bool isString, int startIndex, int endIndex, InternalStructure<T> structure) {
+                this.IsNumber = !isString;
+                this._startIndex = startIndex;
+                this._endIndex = endIndex;
+                this._structure = structure;
             }
 
             public int CompareTo(TypeContent other) {
-                if (isNumber) {
-                    return other.isNumber ? stringValue.IntValue().CompareTo(other.stringValue.IntValue()) : 1; //if number, compare as such, else the other one wins
+                if (IsNumber) {
+                    return other.IsNumber ? StringValue.IntValue().CompareTo(other.StringValue.IntValue()) : 1; //if number, compare as such, else the other one wins
                 } else {
-                    return other.isNumber ? -1 : string.Compare(stringValue, other.stringValue, true); // if number,  we win (as string), otherwise, compare both as strings.
+                    return other.IsNumber ? -1 : string.Compare(StringValue, other.StringValue, true); // if number,  we win (as string), otherwise, compare both as strings.
                 }
             }
         }

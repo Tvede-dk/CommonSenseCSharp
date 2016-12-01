@@ -1,7 +1,6 @@
 ﻿using CommonSenseCSharp.datastructures;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 public static class FunctionalHelpers {
@@ -13,16 +12,16 @@ public static class FunctionalHelpers {
     /// <param name="input">the input list</param>
     /// <param name="generator">the generator / converter </param>
     /// <returns>the resulting collection</returns>
-    public static List<U> Map<U, T>(this IEnumerable<T> input, Func<T, U> generator) {
-        var result = new List<U>(input.Count());
+    public static List<TU> Map<TU, T>(this IEnumerable<T> input, Func<T, TU> generator) {
+        var result = new List<TU>(input.Count());
         foreach (var item in input) {
             result.Add(generator(item));
         }
         return result;
     }
 
-    public static NonNullList<U> FlatMap<U, T>(this IEnumerable<T> input, Func<T, U> generator) {
-        var result = new NonNullList<U>(input.Count());
+    public static NonNullList<TU> FlatMap<TU, T>(this IEnumerable<T> input, Func<T, TU> generator) {
+        var result = new NonNullList<TU>(input.Count());
         foreach (var item in input) {
             if (item != null) {
                 result.Add(generator(item));
@@ -32,8 +31,8 @@ public static class FunctionalHelpers {
     }
 
 
-    public static NonNullList<U> FlatMapWithGlue<U, T>(this IEnumerable<T> input, Func<T, U> map, Func<U, U> glue) {
-        var result = new NonNullList<U>();
+    public static NonNullList<TU> FlatMapWithGlue<TU, T>(this IEnumerable<T> input, Func<T, TU> map, Func<TU, TU> glue) {
+        var result = new NonNullList<TU>();
         input.FlatForeachWithGlue(x => { result.Add(glue(map(x))); },
             null,
             x => { result.Add(map(x)); });
@@ -77,7 +76,7 @@ public static class FunctionalHelpers {
         }
     }
 
-    public static void FlatForeach<T, V>(this IEnumerable<T> list, Func<T, V> onEach) {
+    public static void FlatForeach<T, TV>(this IEnumerable<T> list, Func<T, TV> onEach) {
         foreach (var item in list) {
             if (item != null) {
                 onEach(item);
@@ -94,7 +93,7 @@ public static class FunctionalHelpers {
     /// <typeparam name="U"></typeparam>
     /// <param name="list"></param>
     /// <param name="onEach"></param>
-    public static void Foreach<T, U>(this IEnumerable<T> list, Func<T, U> onEach) {
+    public static void Foreach<T, TU>(this IEnumerable<T> list, Func<T, TU> onEach) {
         foreach (var item in list) {
             onEach(item);
         }
@@ -174,8 +173,8 @@ public static class FunctionalHelpers {
     /// <typeparam name="U"></typeparam>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public static List<U> Flattern<U>(this IEnumerable<IEnumerable<U>> collection) {
-        var result = new List<U>(collection.Count());
+    public static List<TU> Flattern<TU>(this IEnumerable<IEnumerable<TU>> collection) {
+        var result = new List<TU>(collection.Count());
         collection.Foreach(result.AddRange);
         return result;
     }
@@ -185,8 +184,8 @@ public static class FunctionalHelpers {
     /// <typeparam name="U"></typeparam>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public static NonNullList<U> FlatFlattern<U>(this IEnumerable<IEnumerable<U>> collection) {
-        var result = new NonNullList<U>(collection.Count());
+    public static NonNullList<TU> FlatFlattern<TU>(this IEnumerable<IEnumerable<TU>> collection) {
+        var result = new NonNullList<TU>(collection.Count());
         collection.Foreach(result.AddRange);
         return result;
     }
@@ -198,8 +197,8 @@ public static class FunctionalHelpers {
     /// <param name="collection"></param>
     /// <param name="includeItem"></param>
     /// <returns></returns>
-    public static IEnumerable<U> Filter<U>(this IEnumerable<U> collection, Func<U, bool> includeItem) {
-        var result = new List<U>(collection.Count());
+    public static IEnumerable<TU> Filter<TU>(this IEnumerable<TU> collection, Func<TU, bool> includeItem) {
+        var result = new List<TU>(collection.Count());
         collection.Foreach(x => { if (includeItem(x)) { result.Add(x); } });
         return result;
     }
@@ -211,8 +210,8 @@ public static class FunctionalHelpers {
     /// <param name="collection"></param>
     /// <param name="includeItem"></param>
     /// <returns></returns>
-    public static NonNullList<U> FlatFilter<U>(this IEnumerable<U> collection, Func<U, bool> includeItem) {
-        var result = new NonNullList<U>(collection.Count());
+    public static NonNullList<TU> FlatFilter<TU>(this IEnumerable<TU> collection, Func<TU, bool> includeItem) {
+        var result = new NonNullList<TU>(collection.Count());
         collection.Foreach(x => { if (includeItem(x)) { result.Add(x); } });
         return result;
     }
@@ -239,15 +238,15 @@ public static class FunctionalHelpers {
     /// <param name="listA"></param>
     /// <param name="listB"></param>
     /// <returns></returns>
-    public static NonNullList<UnsafePair<T, U>> FlatZip<T, U>(this IEnumerable<T> listA, IEnumerable<U> listB) {
-        var result = new NonNullList<UnsafePair<T, U>>();
+    public static NonNullList<UnsafePair<T, TU>> FlatZip<T, TU>(this IEnumerable<T> listA, IEnumerable<TU> listB) {
+        var result = new NonNullList<UnsafePair<T, TU>>();
         var enA = listA.GetEnumerator();
         var enB = listB.GetEnumerator();
         var enAContains = enA.MoveNext();
         var enBContains = enB.MoveNext();
         while (enAContains || enBContains) {
             T a = default(T);
-            U b = default(U);
+            TU b = default(TU);
             if (enAContains) {
                 a = enA.Current;
                 enAContains = enA.MoveNext();
@@ -256,7 +255,7 @@ public static class FunctionalHelpers {
                 b = enB.Current;
                 enBContains = enB.MoveNext();
             }
-            result.Add(new UnsafePair<T, U>(a, b));
+            result.Add(new UnsafePair<T, TU>(a, b));
         }
         return result;
     }
@@ -269,9 +268,9 @@ public static class FunctionalHelpers {
     /// <param name="listA"></param>
     /// <param name="listB"></param>
     /// <returns></returns>
-    public static NonNullList<SafePair<T, U>> FlatZipSafe<T, U>(this NonNullList<T> listA, NonNullList<U> listB) {
-        var result = new NonNullList<SafePair<T, U>>(Math.Min(listA.Count(), listB.Count()));
-        ArrayUtil.ForEach(listA, listB, (x, y) => result.Add(new SafePair<T, U>(x, y)));
+    public static NonNullList<SafePair<T, TU>> FlatZipSafe<T, TU>(this NonNullList<T> listA, NonNullList<TU> listB) {
+        var result = new NonNullList<SafePair<T, TU>>(Math.Min(listA.Count(), listB.Count()));
+        ArrayUtil.ForEach(listA, listB, (x, y) => result.Add(new SafePair<T, TU>(x, y)));
         return result;
     }
 
