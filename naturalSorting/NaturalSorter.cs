@@ -19,9 +19,9 @@ public static class NaturalSort {
 
     private class InternalStructure<T> {
 
-        private T _obj;
+        private readonly T _obj;
 
-        private string _value;
+        private readonly string _value;
 
         private readonly NonNullList<TypeContent> _order = new NonNullList<TypeContent>();
 
@@ -73,9 +73,9 @@ public static class NaturalSort {
                     return _structure._value.Substring(_startIndex, _endIndex - _startIndex);
                 }
             }
-            private InternalStructure<T> _structure;
-            private int _startIndex;
-            private int _endIndex;
+            private readonly InternalStructure<T> _structure;
+            private readonly int _startIndex;
+            private readonly int _endIndex;
 
             public TypeContent(bool isString, int startIndex, int endIndex, InternalStructure<T> structure) {
                 this.IsNumber = !isString;
