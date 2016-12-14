@@ -1,8 +1,10 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
+using JetBrains.Annotations;
 
 namespace CommonSenseCSharp.datastructures
 {
@@ -13,6 +15,11 @@ namespace CommonSenseCSharp.datastructures
     [Serializable]
     public class ObservableCollectionRange<T> : ObservableCollection<T>, ISerializable
     {
+        /// <summary>
+        ///
+        /// </summary>
+        private const string SerializationIndex = "data";
+
         #region constructors
 
         public ObservableCollectionRange()
@@ -28,19 +35,19 @@ namespace CommonSenseCSharp.datastructures
 
         #region range features
 
-        public void AddAll(IEnumerable<T> list)
+        public void AddAll([NotNull] IEnumerable<T> list)
         {
             list.Foreach(Items.Add);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list));
         }
 
-        public void ClearAndAddAll(IEnumerable<T> list)
+        public void ClearAndAddAll([NotNull] IEnumerable<T> list)
         {
             Items.Clear();
             AddAll(list);
         }
 
-        public void RemoveAll(IEnumerable<T> listToRemove)
+        public void RemoveAll([NotNull] IEnumerable<T> listToRemove)
         {
             listToRemove.Foreach(Items.Remove);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, listToRemove));
@@ -59,7 +66,7 @@ namespace CommonSenseCSharp.datastructures
         {
             try
             {
-                this.ClearAndAddAll((IList<T>) info.GetValue("data", typeof(IList<T>)));
+                this.ClearAndAddAll((IList<T>) info.GetValue(SerializationIndex, typeof(IList<T>)));
             }
             catch (Exception e)
             {
@@ -74,7 +81,7 @@ namespace CommonSenseCSharp.datastructures
         /// <param name="context"></param>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("data", this.Items);
+            info.AddValue(SerializationIndex, this.Items);
         }
 
         #endregion
@@ -110,20 +117,12 @@ namespace CommonSenseCSharp.datastructures
             return base.GetHashCode();
         }
 
+        [CanBeNull]
         public T ElementAt(int index)
         {
             return Items[index];
         }
 
         #endregion
-
-        public T GetSafe(int index)
-        {
-            if (Count > index && index >= 0)
-            {
-                return ElementAt(index);
-            }
-            return default(T);
-        }
     }
 }

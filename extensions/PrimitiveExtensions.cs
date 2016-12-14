@@ -6,7 +6,7 @@ namespace CommonSenseCSharp.extensions
 {
     public static class PrimitiveExtensions
     {
-        public static bool OnTrue(this bool theBool,[NotNull] Action onTrue)
+        public static bool OnTrue(this bool theBool, [NotNull] Action onTrue)
         {
             if (theBool)
             {
@@ -15,7 +15,7 @@ namespace CommonSenseCSharp.extensions
             return theBool;
         }
 
-        public static bool OnFalse(this bool theBool,[NotNull] Action onFalse)
+        public static bool OnFalse(this bool theBool, [NotNull] Action onFalse)
         {
             if (theBool)
             {
@@ -28,6 +28,12 @@ namespace CommonSenseCSharp.extensions
         public static T IfElse<T>(this bool theBool, [NotNull] Func<T> onTrue, [NotNull] Func<T> onFalse)
         {
             return theBool ? onTrue() : onFalse();
+        }
+
+        [NotNull]
+        public static T IfElseSafe<T>(this bool theBool, [NotNull] Func<T> onTrue, [NotNull] Func<T> onFalse)
+        {
+            return (theBool ? onTrue() : onFalse());
         }
     }
 }

@@ -78,7 +78,7 @@ public static class FunctionalHelpers
     /// <typeparam name="T"></typeparam>
     /// <param name="list"></param>
     /// <param name="onEach"></param>
-    public static void Foreach<T>(this IEnumerable<T> list,[NotNull] Action<T> onEach)
+    public static void Foreach<T>(this IEnumerable<T> list, [NotNull] Action<T> onEach)
     {
         foreach (var item in list)
         {
@@ -86,7 +86,7 @@ public static class FunctionalHelpers
         }
     }
 
-    public static void FlatForeach<T>(this IEnumerable<T> list,[NotNull] Action<T> onEach)
+    public static void FlatForeach<T>(this IEnumerable<T> list, [NotNull] Action<T> onEach)
     {
         foreach (var item in list)
         {
@@ -97,7 +97,7 @@ public static class FunctionalHelpers
         }
     }
 
-    public static void FlatForeach<T, TV>(this IEnumerable<T> list,[NotNull] Func<T, TV> onEach)
+    public static void FlatForeach<T, TV>(this IEnumerable<T> list, [NotNull] Func<T, TV> onEach)
     {
         foreach (var item in list)
         {
@@ -117,7 +117,7 @@ public static class FunctionalHelpers
     /// <typeparam name="U"></typeparam>
     /// <param name="list"></param>
     /// <param name="onEach"></param>
-    public static void Foreach<T, TU>(this IEnumerable<T> list,[NotNull] Func<T, TU> onEach)
+    public static void Foreach<T, TU>(this IEnumerable<T> list, [NotNull] Func<T, TU> onEach)
     {
         foreach (var item in list)
         {
@@ -131,7 +131,7 @@ public static class FunctionalHelpers
     /// </summary>
     /// <param name="times"></param>
     /// <param name="callback"></param>
-    public static void PerformEachTime(this int times,[NotNull] Action<int> callback)
+    public static void PerformEachTime(this int times, [NotNull] Action<int> callback)
     {
         0.PerformTimes(times, callback);
     }
@@ -142,7 +142,7 @@ public static class FunctionalHelpers
     /// <param name="start"></param>
     /// <param name="count"></param>
     /// <param name="callback"></param>
-    public static void PerformTimes(this int start, int count,[NotNull] Action<int> callback)
+    public static void PerformTimes(this int start, int count, [NotNull] Action<int> callback)
     {
         for (var i = start; i < start + count; i++)
         {
@@ -156,7 +156,7 @@ public static class FunctionalHelpers
     /// <param name="times"></param>
     /// <param name="callback"></param>
     /// <returns>the index we exited at (if no true returend it will be times -1 ).</returns>
-    public static int PerformEachTimeUntil(this int times,[NotNull] Func<int, bool> callback)
+    public static int PerformEachTimeUntil(this int times, [NotNull] Func<int, bool> callback)
     {
         for (var i = 0; i < times; i++)
         {
@@ -177,7 +177,8 @@ public static class FunctionalHelpers
     /// <param name="shouldReturn"></param>
     /// <param name="atEnd"></param>
     /// <returns></returns>
-    public static T PerformEachTimeUntil<T>(this int times,[NotNull] Func<int, T> callback,[NotNull] Func<T, bool> shouldReturn, T atEnd)
+    public static T PerformEachTimeUntil<T>(this int times, [NotNull] Func<int, T> callback,
+        [NotNull] Func<T, bool> shouldReturn, T atEnd)
     {
         for (var i = 0; i < times; i++)
         {
@@ -196,7 +197,7 @@ public static class FunctionalHelpers
     /// <param name="val"></param>
     /// <param name="ifTrue"></param>
     /// <returns></returns>
-    public static bool DoOnTrue(this bool val,[NotNull] Action ifTrue)
+    public static bool DoOnTrue(this bool val, [NotNull] Action ifTrue)
     {
         if (val)
         {
@@ -341,5 +342,34 @@ public static class FunctionalHelpers
         var result = new NonNullList<SafePair<T, TU>>(Math.Min(listA.Count(), listB.Count()));
         ArrayUtil.ForEach(listA, listB, (x, y) => result.Add(new SafePair<T, TU>(x, y)));
         return result;
+    }
+
+    public static void FlatForeach<T>([NotNull] this IList<T> list, int start, int endExclusive,
+        [NotNull] Action<T> onItem)
+    {
+        //validate indexes are valid and in order..
+        if (start >= endExclusive || start < 0 || endExclusive < 0 || start >= list.Count() ||
+            endExclusive > list.Count())
+        {
+            return;
+        }
+        //then itterate in that range.
+        for (var i = start; i < endExclusive; i++)
+        {
+            onItem(list.ElementAt(i));
+        }
+    }
+
+    public static void IfSafe<T>([CanBeNull] this T obj, Action<T> action)
+    {
+        if (obj != null)
+        {
+            action(obj);
+        }
+    }
+
+    public static U IfSafe<T, U>([CanBeNull] this T obj, Func<T, U> action)
+    {
+        return obj != null ? action(obj) : default(U);
     }
 }
