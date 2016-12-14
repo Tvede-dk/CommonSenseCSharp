@@ -14,13 +14,13 @@ public static class DictonaryUtil
     public static void UseValue<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
         [NotNull] Action<T> onAction)
     {
-        dict.GetSafe(lookup).IfSafe(onAction);
+        dict.GetSafe(lookup)?.IfSafe(onAction);
     }
 
     public static void UseAndFlatTransform<T, TK, TU>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
         [NotNull] Func<T, TU> transform, [NotNull] Action<TU> onSuccess)
     {
-        dict.FlatPerformIfContains(lookup, x => { transform(x)?.IfSafe(onSuccess); });
+        dict.FlatPerformIfContainsKey(lookup, x => { transform(x)?.IfSafe(onSuccess); });
     }
 
     [NotNull]
@@ -53,7 +53,7 @@ public static class DictonaryUtil
         }
     }
 
-    public static void FlatPerformIfContains<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
+    public static void FlatPerformIfContainsKey<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
         [NotNull] Action<T> onContains)
     {
         if (dict.ContainsKey((key)))

@@ -17,23 +17,14 @@ public static class FunctionalHelpers
     public static List<TU> Map<TU, T>(this IEnumerable<T> input, [NotNull] Func<T, TU> generator)
     {
         var result = new List<TU>(input.Count());
-        foreach (var item in input)
-        {
-            result.Add(generator(item));
-        }
+        input.Foreach((x) => result.Add(generator(x)));
         return result;
     }
 
     public static NonNullList<TU> FlatMap<TU, T>(this IEnumerable<T> input, [NotNull] Func<T, TU> generator)
     {
         var result = new NonNullList<TU>(input.Count());
-        foreach (var item in input)
-        {
-            if (item != null)
-            {
-                result.Add(generator(item));
-            }
-        }
+        input.FlatForeach(x => generator(x)?.IfSafe(result.Add));
         return result;
     }
 
@@ -42,20 +33,20 @@ public static class FunctionalHelpers
         [NotNull] Func<TU, TU> glue)
     {
         var result = new NonNullList<TU>();
-        input.FlatForeachWithGlue(x => { result.Add(glue(map(x))); },
-            null,
-            x => { result.Add(map(x)); });
+        input.FlatForeachWithGlue(x => result.Add(glue(map(x))),
+            null, x => { result.Add(map(x)); });
         return result;
     }
 
-    public static void FlatForeachWithGlue<T>(this IEnumerable<T> input, Action<T> foreachCall, Action<T> glue)
+    public static void FlatForeachWithGlue<T>([NotNull] this IEnumerable<T> input, [NotNull] Action<T> foreachCall,
+        [CanBeNull] Action<T> glue)
     {
         input.FlatForeachWithGlue(foreachCall, glue, foreachCall);
     }
 
-    public static void FlatForeachWithGlue<T>(this IEnumerable<T> input, [NotNull] Action<T> foreachCall,
+    public static void FlatForeachWithGlue<T>([NotNull] this IEnumerable<T> input, [NotNull] Action<T> foreachCall,
         [CanBeNull] Action<T> glue,
-        Action<T> last)
+        [CanBeNull] Action<T> last)
     {
         var safeInput = new NonNullList<T>(input);
         var lenght = safeInput.Count();
@@ -78,7 +69,7 @@ public static class FunctionalHelpers
     /// <typeparam name="T"></typeparam>
     /// <param name="list"></param>
     /// <param name="onEach"></param>
-    public static void Foreach<T>(this IEnumerable<T> list, [NotNull] Action<T> onEach)
+    public static void Foreach<T>([NotNull] this IEnumerable<T> list, [NotNull] Action<T> onEach)
     {
         foreach (var item in list)
         {
@@ -86,25 +77,19 @@ public static class FunctionalHelpers
         }
     }
 
-    public static void FlatForeach<T>(this IEnumerable<T> list, [NotNull] Action<T> onEach)
+    public static void FlatForeach<T>([NotNull] this IEnumerable<T> list, [NotNull] Action<T> onEach)
     {
         foreach (var item in list)
         {
-            if (item != null)
-            {
-                onEach(item);
-            }
+            item?.IfSafe(onEach);
         }
     }
 
-    public static void FlatForeach<T, TV>(this IEnumerable<T> list, [NotNull] Func<T, TV> onEach)
+    public static void FlatForeach<T, TV>([NotNull] this IEnumerable<T> list, [NotNull] Func<T, TV> onEach)
     {
         foreach (var item in list)
         {
-            if (item != null)
-            {
-                onEach(item);
-            }
+            item?.IfSafe(onEach);
         }
     }
 
@@ -117,7 +102,7 @@ public static class FunctionalHelpers
     /// <typeparam name="U"></typeparam>
     /// <param name="list"></param>
     /// <param name="onEach"></param>
-    public static void Foreach<T, TU>(this IEnumerable<T> list, [NotNull] Func<T, TU> onEach)
+    public static void Foreach<T, TU>([NotNull] this IEnumerable<T> list, [NotNull] Func<T, TU> onEach)
     {
         foreach (var item in list)
         {
@@ -177,8 +162,9 @@ public static class FunctionalHelpers
     /// <param name="shouldReturn"></param>
     /// <param name="atEnd"></param>
     /// <returns></returns>
+    [CanBeNull]
     public static T PerformEachTimeUntil<T>(this int times, [NotNull] Func<int, T> callback,
-        [NotNull] Func<T, bool> shouldReturn, T atEnd)
+        [NotNull] Func<T, bool> shouldReturn, [CanBeNull] T atEnd)
     {
         for (var i = 0; i < times; i++)
         {
@@ -212,7 +198,8 @@ public static class FunctionalHelpers
     /// <typeparam name="U"></typeparam>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public static List<TU> Flattern<TU>(this IEnumerable<IEnumerable<TU>> collection)
+    [NotNull]
+    public static List<TU> Flattern<TU>([NotNull] this IEnumerable<IEnumerable<TU>> collection)
     {
         var result = new List<TU>(collection.Count());
         collection.Foreach(result.AddRange);
@@ -225,7 +212,8 @@ public static class FunctionalHelpers
     /// <typeparam name="U"></typeparam>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public static NonNullList<TU> FlatFlattern<TU>(this IEnumerable<IEnumerable<TU>> collection)
+    [NotNull]
+    public static NonNullList<TU> FlatFlattern<TU>([NotNull] this IEnumerable<IEnumerable<TU>> collection)
     {
         var result = new NonNullList<TU>(collection.Count());
         collection.Foreach(result.AddRange);
@@ -239,16 +227,12 @@ public static class FunctionalHelpers
     /// <param name="collection"></param>
     /// <param name="includeItem"></param>
     /// <returns></returns>
-    public static IEnumerable<TU> Filter<TU>(this IEnumerable<TU> collection, [NotNull] Func<TU, bool> includeItem)
+    [NotNull]
+    public static IEnumerable<TU> Filter<TU>([NotNull] this IEnumerable<TU> collection,
+        [NotNull] Func<TU, bool> includeItem)
     {
         var result = new List<TU>(collection.Count());
-        collection.Foreach(x =>
-        {
-            if (includeItem(x))
-            {
-                result.Add(x);
-            }
-        });
+        collection.Foreach(x => { includeItem(x).DoOnTrue(() => result.Add(x)); });
         return result;
     }
 
@@ -259,20 +243,15 @@ public static class FunctionalHelpers
     /// <param name="collection"></param>
     /// <param name="includeItem"></param>
     /// <returns></returns>
+    [NotNull]
     public static NonNullList<TU> FlatFilter<TU>(this IEnumerable<TU> collection, [NotNull] Func<TU, bool> includeItem)
     {
         var result = new NonNullList<TU>(collection.Count());
-        collection.Foreach(x =>
-        {
-            if (includeItem(x))
-            {
-                result.Add(x);
-            }
-        });
+        collection.Foreach(x => { x?.IfSafe(includeItem).DoOnTrue(() => result.Add(x)); });
         return result;
     }
 
-
+    [NotNull]
     public static NonNullList<T> FlatTakeFrom<T>(this IEnumerable<int> indexes,
         [NotNull] IEnumerable<T> collectionToTakeFrom)
     {
@@ -299,6 +278,7 @@ public static class FunctionalHelpers
     /// <param name="listA"></param>
     /// <param name="listB"></param>
     /// <returns></returns>
+    [NotNull]
     public static NonNullList<UnsafePair<T, TU>> FlatZip<T, TU>(this IEnumerable<T> listA,
         [NotNull] IEnumerable<TU> listB)
     {
@@ -336,6 +316,7 @@ public static class FunctionalHelpers
     /// <param name="listA"></param>
     /// <param name="listB"></param>
     /// <returns></returns>
+    [NotNull]
     public static NonNullList<SafePair<T, TU>> FlatZipSafe<T, TU>(this NonNullList<T> listA,
         [NotNull] NonNullList<TU> listB)
     {
@@ -368,6 +349,7 @@ public static class FunctionalHelpers
         }
     }
 
+    [CanBeNull]
     public static U IfSafe<T, U>([CanBeNull] this T obj, Func<T, U> action)
     {
         return obj != null ? action(obj) : default(U);
