@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using JetBrains.Annotations;
 
 public static class FunctionalHelpers
@@ -353,5 +355,50 @@ public static class FunctionalHelpers
     public static U IfSafe<T, U>([CanBeNull] this T obj, Func<T, U> action)
     {
         return obj != null ? action(obj) : default(U);
+    }
+
+    [NotNull]
+    public static NonNullList<T> FlatCast<T, U>([NotNull] this IEnumerable<U> lst)
+        where T : class
+        where U : class
+    {
+        return FlatMap(lst, x => x as T);
+    }
+
+    [CanBeNull]
+    public static void IfSafeCast<T>([CanBeNull] this object obj, [NotNull] Action<T> onSafe) where T : class
+    {
+        (obj as T)?.IfSafe(onSafe);
+    }
+
+
+    /// <summary>
+    /// Catetgorizes the input list into "buckets" of the same "key" /  type.
+    /// TODO insert example here.
+    /// </summary>
+    /// <param name="lst"></param>
+    /// <param name="extractor"></param>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    /// <returns></returns>
+    [NotNull]
+    public static NonNullDictonary<TKey, NonNullList<TValue>> FlatCategorize<TKey, TValue>(
+        [NotNull] this IEnumerable<TValue> lst,
+        Func<TValue, TKey> extractor)
+    {
+        var res = new NonNullDictonary<TKey, NonNullList<TValue>>();
+        lst.FlatForeach(
+            item => { extractor(item)?.IfSafe(key => res.InsertInto(key, item, () => new NonNullList<TValue>())); });
+        return res;
+    }
+
+    [NotNull]
+    public static NonNullDictonary<TKey, TValue> FlatCategorizeUniq<TKey, TValue>(
+        [NotNull] this IEnumerable<TValue> lst,
+        Func<TValue, TKey> extractor)
+    {
+        var res = new NonNullDictonary<TKey, TValue>();
+        lst.FlatForeach(item => { extractor(item)?.IfSafe(key => res.AddIfNotThere(key, item)); });
+        return res;
     }
 }

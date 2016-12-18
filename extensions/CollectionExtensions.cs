@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CommonSenseCSharp.datastructures;
 using JetBrains.Annotations;
 
 namespace CommonSenseCSharp.extensions
@@ -47,9 +48,10 @@ namespace CommonSenseCSharp.extensions
 
         public static void UseFirst<T>([NotNull] this IList collection, Action<T> onFirst) where T : class
         {
-            if (collection.Count > 0 && collection[0] is T)
+            var item = collection[0] as T;
+            if (collection.Count > 0 && item != null)
             {
-                onFirst((T) collection[0]);
+                onFirst(item);
             }
         }
 
@@ -60,6 +62,41 @@ namespace CommonSenseCSharp.extensions
             {
                 onCollection(collection.Cast<T>());
             }
+        }
+
+        [NotNull]
+        public static T ReverseResult<T, U>([NotNull] this T collection) where T : List<U>
+        {
+            collection.Reverse();
+            return collection;
+        }
+
+        [NotNull]
+        public static List<T> ReverseResult<T>([NotNull] this List<T> collection)
+        {
+            collection.Reverse();
+            return collection;
+        }
+
+        [NotNull]
+        public static NonNullList<T> ReverseResult<T>([NotNull] this NonNullList<T> collection)
+        {
+            collection.Reverse();
+            return collection;
+        }
+
+        [NotNull]
+        public static T AddReturn<T>([NotNull] this ICollection<T> list, [NotNull] T obj)
+        {
+            list.Add(obj);
+            return obj;
+        }
+
+        [NotNull]
+        public static ICollection<T> AddFluent<T>([NotNull] this ICollection<T> list, [NotNull] T obj)
+        {
+            list.Add(obj);
+            return list;
         }
     }
 }

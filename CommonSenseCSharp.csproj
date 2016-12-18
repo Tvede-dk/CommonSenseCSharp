@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="datastructures\NonNullDictonary.cs" />
     <Compile Include="datastructures\NonNullHashSet.cs" />
     <Compile Include="datastructures\NonNullList.cs" />
     <Compile Include="datastructures\ObservableCollectionRange.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="extensions\EnumUtil.cs" />
     <Compile Include="extensions\FunctionalHelpers.cs" />
     <Compile Include="extensions\HashSet.cs" />
+    <Compile Include="extensions\ObjectExtensions.cs" />
     <Compile Include="extensions\ParseExtensions.cs" />
     <Compile Include="extensions\PrimitiveExtensions.cs" />
     <Compile Include="extensions\StringHelper.cs" />

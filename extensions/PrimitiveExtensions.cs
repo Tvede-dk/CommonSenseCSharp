@@ -17,7 +17,7 @@ namespace CommonSenseCSharp.extensions
 
         public static bool OnFalse(this bool theBool, [NotNull] Action onFalse)
         {
-            if (theBool)
+            if (!theBool)
             {
                 onFalse();
             }

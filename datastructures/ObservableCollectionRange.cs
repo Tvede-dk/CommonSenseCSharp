@@ -26,7 +26,7 @@ namespace CommonSenseCSharp.datastructures
         {
         }
 
-        public ObservableCollectionRange(IEnumerable<T> data)
+        public ObservableCollectionRange([NotNull] IEnumerable<T> data)
         {
             this.AddAll(data);
         }

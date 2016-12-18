@@ -62,6 +62,19 @@ public static class DictonaryUtil
         }
     }
 
+    public static void FlatPerformIfContainsKey<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
+        [NotNull] Action<T> onContains, [NotNull] Action ifNot)
+    {
+        if (dict.ContainsKey((key)))
+        {
+            dict[key]?.IfSafe(onContains);
+        }
+        else
+        {
+            ifNot();
+        }
+    }
+
     [NotNull]
     public static Dictionary<TK, T> AddF<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
         [NotNull] T value)
@@ -76,5 +89,16 @@ public static class DictonaryUtil
     {
         toRemove?.FlatForeach(dict.Remove);
         return dict;
+    }
+
+
+    public static void InsertInto<TKey, TValue, U>([NotNull] this Dictionary<TKey, U> dict,
+        [NotNull] TKey key, [NotNull] TValue value, Func<U> listCreator) where U : IList<TValue>
+    {
+        if (!dict.ContainsKey(key))
+        {
+            dict.Add(key, listCreator());
+        }
+        dict[key].Add(value);
     }
 }
