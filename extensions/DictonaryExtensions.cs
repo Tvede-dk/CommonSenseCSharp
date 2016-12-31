@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CommonSenseCSharp.datastructures;
 using CommonSenseCSharp.extensions;
 using JetBrains.Annotations;
 
@@ -7,6 +8,13 @@ public static class DictonaryUtil{
     public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
         [CanBeNull] T fallback = default(T)){
         return dict.ContainsKey(lookup) ? dict[lookup] : fallback;
+    }
+
+    public static NonNullList<T> GetAllSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, params TK[] lookups)
+    {
+        var result = new NonNullList<T>();
+        lookups.FlatForeach(x => result.Add(dict.GetSafe(x)));
+        return result;
     }
 
     public static void UseValue<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
