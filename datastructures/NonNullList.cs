@@ -8,7 +8,6 @@ namespace CommonSenseCSharp.datastructures
     /// a proxy class that basically discards all null related queries on this list, thus making sure every element inside is NOT null.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Serializable]
     public class NonNullList<T> : List<T>
     {
         public NonNullList([CanBeNull] T[] variable)

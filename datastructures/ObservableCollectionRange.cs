@@ -12,13 +12,9 @@ namespace CommonSenseCSharp.datastructures
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Serializable]
-    public class ObservableCollectionRange<T> : ObservableCollection<T>, ISerializable
+
+    public class ObservableCollectionRange<T> : ObservableCollection<T>
     {
-        /// <summary>
-        ///
-        /// </summary>
-        private const string SerializationIndex = "data";
 
         #region constructors
 
@@ -55,36 +51,6 @@ namespace CommonSenseCSharp.datastructures
 
         #endregion
 
-        #region serialzation
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        protected ObservableCollectionRange(SerializationInfo info, StreamingContext context)
-        {
-            try
-            {
-                this.ClearAndAddAll((IList<T>) info.GetValue(SerializationIndex, typeof(IList<T>)));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(SerializationIndex, this.Items);
-        }
-
-        #endregion
 
         #region Equals and hashcode
 

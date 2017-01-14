@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using JetBrains.Annotations;
+using System.Threading.Tasks;
 
 public static class FunctionalHelpers
 {
@@ -64,6 +63,35 @@ public static class FunctionalHelpers
         }
         last?.Invoke(safeInput.Last());
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <param name="onEach"></param>
+    /// <returns></returns>
+    public async static Task ForeachAsync<T>(this IEnumerable<T> list, Func<T, Task> onEach)
+    {
+        foreach (var item in list)
+        {
+            await onEach(item);
+        }
+    }
+
+    public async static Task FlatForeachAsync<T>(this IEnumerable<T> list, Func<T, Task> onEach)
+    {
+        foreach (var item in list)
+        {
+            if (item != null)
+            {
+                await onEach(item);
+            }
+        }
+    }
+
+
+
 
     /// <summary>
     /// Performs and action over a IEnumerable (given an action.)
