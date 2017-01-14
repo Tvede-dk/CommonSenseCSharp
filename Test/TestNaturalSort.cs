@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using CommonSenseCSharp.datastructures;
+using NUnit.Framework;
 
 namespace Tests {
-    [TestClass]
+    [TestFixture]
     public class NaturalSortTest {
-        [TestMethod]
+        [Test]
         public void TestSimpleTime() {
             var lst = new NonNullList<string>();
             lst.Add("x10");
@@ -22,7 +22,7 @@ namespace Tests {
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestLongSort() {
             var lst = new NonNullList<string>();
             var rand1 = new Random();
