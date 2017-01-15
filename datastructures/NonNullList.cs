@@ -99,5 +99,13 @@ namespace CommonSenseCSharp.datastructures{
         public static NonNullList<T> CreateFrom([NotNull] params T[] items){
             return items.FlatMap(x => x);
         }
+
+        [NotNull]
+        public NonNullList<T> Limit([PositiveIntRange] int limitListCount){
+            if (Count > limitListCount && limitListCount > 0){
+                return GetSafeRange(0, limitListCount);
+            }
+            return this;
+        }
     }
 }

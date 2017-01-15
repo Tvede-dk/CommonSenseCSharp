@@ -373,4 +373,10 @@ public static class FunctionalHelpers{
         lst.FlatForeach(item => { extractor(item)?.IfSafe(key => res.AddIfNotThere(key, item)); });
         return res;
     }
+
+    [NotNull]
+    public static NonNullList<T> FlatDistinct<T, TK>([NotNull] this IEnumerable<T> collection,
+        [NotNull] Func<T, TK> keyExtractor){
+        return FlatCategorizeUniq(collection, keyExtractor).FlatMap(x => x.Value);
+    }
 }
