@@ -46,6 +46,16 @@ public class PositiveLongRangeAttribute : LongRangeAttribute{
 
 #endregion
 
+#region float
+
+public class FloatRangeAttribute : Attribute{
+
+}
+
+public class PositiveFloatRangeAttribute : Attribute{
+}
+
+#endregion
 
 #region Doubles
 

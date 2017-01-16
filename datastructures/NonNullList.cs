@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace CommonSenseCSharp.datastructures{
@@ -106,6 +107,15 @@ namespace CommonSenseCSharp.datastructures{
                 return GetSafeRange(0, limitListCount);
             }
             return this;
+        }
+
+        public void Repeate([PositiveIntRange] int toSize){
+            if (toSize <= Count || Count == 0){
+                return;
+            }
+            for (var i = Count; i < toSize; i++){
+                Add(this.First());
+            }
         }
     }
 }
