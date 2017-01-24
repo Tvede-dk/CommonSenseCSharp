@@ -5,11 +5,11 @@ using System.Linq;
 namespace CommonSenseCSharp.extensions {
     public static class EnumUtil {
         public static IEnumerable<TEnum> GetAllValues<TEnum>()
-            where TEnum : struct, IConvertible, IComparable, IFormattable {
+            where TEnum : struct, IComparable, IFormattable {
             return Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
         }
         public static TEnum TryParseOrDefault<TEnum>(string value, bool ignoreCase, TEnum defaultVal)
-        where TEnum : struct, IConvertible, IComparable, IFormattable {
+        where TEnum : struct, IComparable, IFormattable {
             TEnum current;
             if (!Enum.TryParse(value, ignoreCase, out current)) {
                 current = defaultVal;

@@ -6,7 +6,10 @@
   "dependencies": {
     "NUnit": "3.4.1",
     "dotnet-test-nunit": "3.4.0-beta-2",
-    "CommonSenseCSharp": "1.0.0-*"
+    "CommonSenseCSharp": {
+      "version": "1.0.0-*",
+      "target": "project"
+    }
   },
 
     "testRunner": "nunit",

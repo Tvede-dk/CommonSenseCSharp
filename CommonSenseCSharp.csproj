@@ -2,10 +2,10 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{446F53DA-FEF7-4B31-9C71-225BB40B5FDF}</ProjectGuid>
+    <ProjectGuid>{7D924229-95A6-4751-B2AF-9A867B4DAB63}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CommonSenseCSharp</RootNamespace>
@@ -13,9 +13,8 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,30 +34,46 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="project.json" />
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="annotations\RangeAttribute.cs" />
     <Compile Include="datastructures\NonNullDictonary.cs" />
     <Compile Include="datastructures\NonNullHashSet.cs" />
     <Compile Include="datastructures\NonNullList.cs" />
+    <Compile Include="datastructures\NonNullOrderedDictonary.cs" />
     <Compile Include="datastructures\ObservableCollectionRange.cs" />
     <Compile Include="datastructures\ObservableNonNullCollectionRange.cs" />
     <Compile Include="datastructures\SafePair.cs" />
+    <Compile Include="datastructures\SafeQueue.cs" />
+    <Compile Include="datastructures\SafeStack.cs" />
     <Compile Include="datastructures\UnsafePair.cs" />
     <Compile Include="extensions\ArrayHelper.cs" />
     <Compile Include="extensions\CollectionExtensions.cs" />
     <Compile Include="extensions\DictonaryExtensions.cs" />
     <Compile Include="extensions\EnumUtil.cs" />
-    <Compile Include="extensions\FunctionalHelpers.cs" />
+    <Compile Include="extensions\functional\FunctionalHelpers.cs" />
+    <Compile Include="extensions\functional\FunctionalRecursive.cs" />
     <Compile Include="extensions\HashSet.cs" />
     <Compile Include="extensions\ObjectExtensions.cs" />
     <Compile Include="extensions\ParseExtensions.cs" />
     <Compile Include="extensions\PrimitiveExtensions.cs" />
+    <Compile Include="extensions\StringBuilderExtensions.cs" />
     <Compile Include="extensions\StringHelper.cs" />
     <Compile Include="extensions\TaskExtensions.cs" />
+    <Compile Include="interfaces\IClone.cs" />
     <Compile Include="naturalSorting\NaturalSorter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations.PCL328, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\JetBrains.Annotations.PCL328.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
