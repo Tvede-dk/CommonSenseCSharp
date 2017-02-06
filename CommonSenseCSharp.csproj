@@ -46,6 +46,7 @@
     <Compile Include="datastructures\SafeStack.cs" />
     <Compile Include="datastructures\UnsafePair.cs" />
     <Compile Include="extensions\ArrayHelper.cs" />
+    <Compile Include="extensions\CharExtensions.cs" />
     <Compile Include="extensions\CollectionExtensions.cs" />
     <Compile Include="extensions\DictonaryExtensions.cs" />
     <Compile Include="extensions\EnumUtil.cs" />

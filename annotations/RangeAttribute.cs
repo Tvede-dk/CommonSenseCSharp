@@ -49,7 +49,6 @@ public class PositiveLongRangeAttribute : LongRangeAttribute{
 #region float
 
 public class FloatRangeAttribute : Attribute{
-
 }
 
 public class PositiveFloatRangeAttribute : Attribute{
@@ -80,3 +79,11 @@ public class PositiveDoubleRangeAttribute : DoubleRangeAttribute{
 }
 
 #endregion
+
+[AttributeUsage(AttributeTargets.All)]
+public class IndexOfRangeAttribute : IntRangeAttribute{
+    public IndexOfRangeAttribute() : base(-1, int.MaxValue){
+    }
+
+    public const int NotFound = -1;
+}
