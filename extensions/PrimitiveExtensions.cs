@@ -37,5 +37,19 @@ namespace CommonSenseCSharp.extensions {
                 onFalse(value);
             }
         }
+        public static void IfElseSafeVoid<T>(this bool theBool,
+            [NotNull] T value,
+            [NotNull] Action<T> onTrue,
+            [NotNull] Action onFalse)
+        {
+            if (theBool)
+            {
+                onTrue(value);
+            }
+            else
+            {
+                onFalse();
+            }
+        }
     }
 }

@@ -350,10 +350,14 @@ public static class FunctionalHelpers {
         }
     }
 
-    public static void IfSafe<T>([CanBeNull] this T obj, Action<T> action) {
+    public static void IfSafe<T>([CanBeNull] this T obj, [NotNull] Action<T> action) {
         if (obj != null) {
             action(obj);
         }
+    }
+
+    public static void IfSafeOr<T>([CanBeNull] this T obj, [NotNull] Action<T> action, Action bad) {
+        (obj != null).IfElseSafeVoid(obj, action, bad);
     }
 
     [CanBeNull]

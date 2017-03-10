@@ -59,8 +59,8 @@ namespace CommonSenseCSharp.datastructures{
         /// </summary>
         /// <param name="key">The key associated with the value to get or set.</param>
         public TValue this[TKey key]{
-            get{ return GetValue(key); }
-            set{ SetValue(key, value); }
+            get => GetValue(key);
+            set => SetValue(key, value);
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace CommonSenseCSharp.datastructures{
         /// </summary>
         /// <param name="index">The index of the value to get or set.</param>
         public TValue this[int index]{
-            get{ return GetItem(index).Value; }
-            set{ SetItem(index, value); }
+            get => GetItem(index).Value;
+            set => SetItem(index, value);
         }
 
         public int Count => _keyedCollection.Count;
@@ -288,8 +288,8 @@ namespace CommonSenseCSharp.datastructures{
         ICollection<TValue> IDictionary<TKey, TValue>.Values => Values.ToList();
 
         TValue IDictionary<TKey, TValue>.this[TKey key]{
-            get{ return this[key]; }
-            set{ this[key] = value; }
+            get => this[key];
+            set => this[key] = value;
         }
 
         #endregion
@@ -369,8 +369,8 @@ namespace CommonSenseCSharp.datastructures{
         //ICollection Values => (ICollection) this.Values;
 
         object this[object key]{
-            get{ return this[(TKey) key]; }
-            set{ this[(TKey) key] = (TValue) value; }
+            get => this[(TKey) key];
+            set => this[(TKey) key] = (TValue) value;
         }
 
         #endregion

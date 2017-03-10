@@ -68,11 +68,7 @@ public static class NaturalSort {
         struct TypeContent {
             public bool IsNumber { get; set; }
 
-            public string StringValue {
-                get {
-                    return _structure._value.Substring(_startIndex, _endIndex - _startIndex);
-                }
-            }
+            public string StringValue => _structure._value.Substring(_startIndex, _endIndex - _startIndex);
             private readonly InternalStructure<T> _structure;
             private readonly int _startIndex;
             private readonly int _endIndex;
