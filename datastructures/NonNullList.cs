@@ -117,5 +117,13 @@ namespace CommonSenseCSharp.datastructures{
                 Add(this.First());
             }
         }
+
+        public void AddOrRemove([NotNull] T item, bool shouldAdd) {
+            if (shouldAdd) {
+                Add(item);
+            } else {
+                Remove(item);
+            }
+        }
     }
 }
