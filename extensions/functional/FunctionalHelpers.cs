@@ -21,7 +21,7 @@ public static class FunctionalHelpers {
         return result;
     }
 
-    public static NonNullList<TU> FlatMap<TU, T>(this IEnumerable<T> input, [NotNull] Func<T, TU> generator) {
+    public static NonNullList<TU> FlatMap<TU, T>([NotNull] this IEnumerable<T> input, [NotNull] Func<T, TU> generator) {
         var result = new NonNullList<TU>(input.Count());
         input.FlatForeach(x => generator(x)?.IfSafe(result.Add));
         return result;

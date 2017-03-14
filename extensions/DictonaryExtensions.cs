@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CommonSenseCSharp.datastructures;
 using CommonSenseCSharp.extensions;
 using JetBrains.Annotations;
 
 public static class DictonaryUtil{
+
+    public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup) {
+        return dict.GetSafe(lookup, default(T));
+    }
+
     public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
-        [CanBeNull] T fallback = default(T)){
+        [CanBeNull] T fallback){
         return dict.ContainsKey(lookup) ? dict[lookup] : fallback;
     }
 
-    public static NonNullList<T> GetAllSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, params TK[] lookups)
-    {
-        var result = new NonNullList<T>();
-        lookups.FlatForeach(x => result.Add(dict.GetSafe(x)));
-        return result;
+    public static NonNullList<T> GetAllSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, params TK[] lookups) {
+        return lookups.FlatMap(dict.GetSafe);
     }
 
     public static void UseValue<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
@@ -47,7 +50,7 @@ public static class DictonaryUtil{
 
     public static void PerformIfContains<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
         [NotNull] Action<T> onContains){
-        if (dict.ContainsKey((key))){
+        if (dict.ContainsKey(key)){
             onContains(dict[key]);
         }
     }
