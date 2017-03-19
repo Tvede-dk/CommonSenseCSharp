@@ -90,6 +90,12 @@ public static class DictonaryUtil {
         return dict;
     }
 
+    [NotNull]
+    public static void ClearAndSet<T>([NotNull] this Dictionary<string, T> dict, IDictionary<string, T> otherDictToCopy) {
+        dict.Clear();
+        otherDictToCopy.FlatForeach(dict.Add);
+    }
+
     [CanBeNull]
     public static T GetAndRemove<TK, T>([NotNull] this Dictionary<TK, T> dict,[NotNull] TK key) {
         var temp = dict.GetSafe(key);

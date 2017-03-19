@@ -10,8 +10,7 @@ namespace CommonSenseCSharp.extensions {
         }
         public static TEnum TryParseOrDefault<TEnum>(string value, bool ignoreCase, TEnum defaultVal)
         where TEnum : struct, IComparable, IFormattable {
-            TEnum current;
-            if (!Enum.TryParse(value, ignoreCase, out current)) {
+            if (!Enum.TryParse(value, ignoreCase, out TEnum current)) {
                 current = defaultVal;
             }
             return current;

@@ -33,12 +33,6 @@ public static class StringBuilderExtensions {
         return str;
     }
 
-    public static int IntValue([NotNull] this string str) {
-        var temp = 0;
-        int.TryParse(str, out temp);
-        return temp;
-    }
-
     public static int IntValue([NotNull] this string str, int otherWise) {
         return int.TryParse(str, out var temp) ? temp : otherWise;
     }
@@ -53,6 +47,19 @@ public static class StringBuilderExtensions {
 
     public static double IntValue([NotNull] this string str, double otherWise) {
         return double.TryParse(str, out var temp) ? temp : otherWise;
+    }
+
+    [NotNull]
+    public static string Repeate([NotNull] this string str, int numberOfTimesToRepeate) {
+        if (numberOfTimesToRepeate < 10 && str.Length < 50) { //simple heuristic, only use stringbuilder when nessary. might need tweeaking.
+            var result = str;
+            numberOfTimesToRepeate.PerformEachTime(_ => result += str);
+            return result;
+        }
+        //it might be now.
+        var sb = new StringBuilder(str.Length * numberOfTimesToRepeate);
+        numberOfTimesToRepeate.PerformEachTime(_ => sb.Append(str));
+        return sb.ToString();
     }
 
     [NotNull]

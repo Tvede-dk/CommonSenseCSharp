@@ -82,7 +82,7 @@ public static class NaturalSort {
 
             public int CompareTo(TypeContent other) {
                 if (IsNumber) {
-                    return other.IsNumber ? StringValue.IntValue().CompareTo(other.StringValue.IntValue()) : 1; //if number, compare as such, else the other one wins
+                    return other.IsNumber ? StringValue.IntValue(0).CompareTo(other.StringValue.IntValue(0)) : 1; //if number, compare as such, else the other one wins
                 } else {
                     return other.IsNumber ? -1 : string.Compare(StringValue, other.StringValue, StringComparison.CurrentCultureIgnoreCase); // if number,  we win (as string), otherwise, compare both as strings.
                 }

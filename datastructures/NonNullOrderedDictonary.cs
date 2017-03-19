@@ -396,13 +396,19 @@ namespace CommonSenseCSharp.datastructures{
 
         public KeyedCollection2(Func<TItem, TKey> getKeyForItemDelegate)
             : base(){
-            if (getKeyForItemDelegate == null) throw new ArgumentNullException(DelegateNullExceptionMessage);
+            if (getKeyForItemDelegate == null) {
+                throw new ArgumentNullException(DelegateNullExceptionMessage);
+            }
+
             _getKeyForItemDelegate = getKeyForItemDelegate;
         }
 
         public KeyedCollection2(Func<TItem, TKey> getKeyForItemDelegate, IEqualityComparer<TKey> comparer)
             : base(comparer){
-            if (getKeyForItemDelegate == null) throw new ArgumentNullException(DelegateNullExceptionMessage);
+            if (getKeyForItemDelegate == null) {
+                throw new ArgumentNullException(DelegateNullExceptionMessage);
+            }
+
             _getKeyForItemDelegate = getKeyForItemDelegate;
         }
 
@@ -448,7 +454,10 @@ namespace CommonSenseCSharp.datastructures{
         #region Constructors
 
         public Comparer2(Comparison<T> comparison){
-            if (comparison == null) throw new ArgumentNullException(nameof(comparison));
+            if (comparison == null) {
+                throw new ArgumentNullException(nameof(comparison));
+            }
+
             _compareFunction = comparison;
         }
 
