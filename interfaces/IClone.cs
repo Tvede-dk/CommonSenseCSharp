@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace CommonSenseCSharp.interfaces
 {
-    public interface IClone<T>
+
+    public interface IClone<out T>
     {
+
+        [NotNull]
         T CloneDeep();
     }
 
