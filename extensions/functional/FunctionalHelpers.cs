@@ -107,6 +107,10 @@ public static class FunctionalHelpers {
         }
     }
 
+    public static bool FlatContains<T>([NotNull] this IEnumerable<T> list, Func<T, bool> isEquals) {
+        return list.Any(t1 => t1 != null && isEquals(t1));
+    }
+
 
     /// <summary>
     /// Performs and action over a IEnumerable (given a function) ignoring the result of a function
