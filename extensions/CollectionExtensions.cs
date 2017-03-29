@@ -46,7 +46,7 @@ namespace CommonSenseCSharp.extensions {
 
 
         public static void UseFirstAs<T>([NotNull] this IList collection, Action<T> onFirst) where T : class {
-            var item = collection[0] as T;
+            var item = collection.FirstOrDefault(default(T)) as T;
             if (collection.Count > 0 && item != null) {
                 onFirst(item);
             }
