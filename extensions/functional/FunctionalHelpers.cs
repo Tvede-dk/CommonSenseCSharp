@@ -220,7 +220,7 @@ public static class FunctionalHelpers {
     /// <summary>
     /// Flatterns a list (in i a  list) to a list by moving all elements in the depth into the same list.
     /// </summary>
-    /// <typeparam name="U"></typeparam>
+    /// <typeparam name="TU"></typeparam>
     /// <param name="collection"></param>
     /// <returns></returns>
     [NotNull]
@@ -237,6 +237,14 @@ public static class FunctionalHelpers {
 
         return result;
     }
+
+    [CanBeNull]
+    public static TU FlatFlattern<TU>([NotNull] this IEnumerable<TU> collection,[CanBeNull] TU combineStartValue, Func<TU, TU, TU> combineStep) {
+        var result = combineStartValue;
+        collection.FlatForeach(next => result = combineStep(result, next));
+        return result;
+    }
+
 
     /// <summary>
     ///

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using JetBrains.Annotations;
+using Microsoft.VisualBasic;
 
 public static class StringBuilderExtensions {
     /// <summary>
@@ -66,5 +67,16 @@ public static class StringBuilderExtensions {
     public static StringBuilder Append([NotNull] this StringBuilder builder, [NotNull] params string[] items) {
         items.FlatForeach(builder.Append);
         return builder;
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="strs"></param>
+    /// <returns>true if all the strings are contained.</returns>
+    public static bool ContainsAll([NotNull] this string str, [NotNull] params string[] strs) {
+        //TODO use a better impl, as this is pretty slow.
+        return strs.FlatMap(str.Contains).FlatFlattern(true, (x, y) => x &= y);
     }
 }
