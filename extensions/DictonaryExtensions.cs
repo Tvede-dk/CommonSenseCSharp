@@ -13,6 +13,9 @@ public static class DictonaryUtil {
     public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
         [CanBeNull] T fallback) => dict.ContainsKey(lookup) ? dict[lookup] : fallback;
 
+    public static T? GetSafeStruct<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
+        [CanBeNull] T? fallback) where T : struct => dict.ContainsKey(lookup) ? dict[lookup] : fallback;
+
     public static NonNullList<T> GetAllSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, params TK[] lookups) => lookups.FlatMap(dict.GetSafe);
 
     public static void UseValue<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
@@ -79,7 +82,7 @@ public static class DictonaryUtil {
     }
 
     [CanBeNull]
-    public static T GetAndRemove<TK, T>([NotNull] this Dictionary<TK, T> dict,[NotNull] TK key) {
+    public static T GetAndRemove<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key) {
         var temp = dict.GetSafe(key);
         dict.Remove(key);
         return temp;
