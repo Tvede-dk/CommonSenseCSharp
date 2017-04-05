@@ -5,13 +5,9 @@ using System.Text;
 
 public static class NaturalSort {
 
-    public static NonNullList<T> SortNatural<T>(this NonNullList<T> list, Func<T, string> extractor) {
-        return list.FlatMap(x => { return new InternalStructure<T>(x, extractor(x)); }).SortInternalStructure();
-    }
+    public static NonNullList<T> SortNatural<T>(this NonNullList<T> list, Func<T, string> extractor) => list.FlatMap(x => { return new InternalStructure<T>(x, extractor(x)); }).SortInternalStructure();
 
-    public static NonNullList<string> SortNatural(this IEnumerable<string> list) {
-        return list?.FlatMap(x => { return new InternalStructure<string>(x, x); }).SortInternalStructure() ?? new NonNullList<string>();
-    }
+    public static NonNullList<string> SortNatural(this IEnumerable<string> list) => list?.FlatMap(x => { return new InternalStructure<string>(x, x); }).SortInternalStructure() ?? new NonNullList<string>();
     private static NonNullList<T> SortInternalStructure<T>(this NonNullList<InternalStructure<T>> newLst) {
         newLst.Sort((lhs, rhs) => lhs.CompareTo(rhs));
         return newLst.FlatMap(x => x.GetObj());
@@ -61,9 +57,7 @@ public static class NaturalSort {
             return res != 0 ? res : _order.Count.CompareTo(rhs._order.Count); //if res != 0, return res, otherwise whichever is the smallest of the 2 order lists.
         }
 
-        public T GetObj() {
-            return _obj;
-        }
+        public T GetObj() => _obj;
 
         struct TypeContent {
             public bool IsNumber { get; set; }

@@ -35,10 +35,7 @@ namespace CommonSenseCSharp.datastructures
         }
 
         #region range features
-        public new void AddAll(IEnumerable<T> list)
-        {
-            base.AddAll(list.Filter(x => x != null));
-        }
+        public new void AddAll(IEnumerable<T> list) => base.AddAll(list.Filter(x => x != null));
 
         public new void ClearAndAddAll(IEnumerable<T> list)
         {

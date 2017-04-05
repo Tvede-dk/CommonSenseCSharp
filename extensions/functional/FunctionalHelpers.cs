@@ -40,9 +40,7 @@ public static class FunctionalHelpers {
 
     public static void FlatForeachWithGlue<T>([NotNull] this IEnumerable<T> input,
         [NotNull] Action<T> foreachCall,
-        [CanBeNull] Action<T> glue) {
-        input.FlatForeachWithGlue(foreachCall, glue, foreachCall);
-    }
+        [CanBeNull] Action<T> glue) => input.FlatForeachWithGlue(foreachCall, glue, foreachCall);
 
     public static void FlatForeachWithGlue<T>([NotNull] this IEnumerable<T> input,
         [NotNull] Action<T> foreachCall,
@@ -107,9 +105,7 @@ public static class FunctionalHelpers {
         }
     }
 
-    public static bool FlatContains<T>([NotNull] this IEnumerable<T> list, Func<T, bool> isEquals) {
-        return list.Any(t1 => t1 != null && isEquals(t1));
-    }
+    public static bool FlatContains<T>([NotNull] this IEnumerable<T> list, Func<T, bool> isEquals) => list.Any(t1 => t1 != null && isEquals(t1));
 
 
     /// <summary>
@@ -132,9 +128,7 @@ public static class FunctionalHelpers {
     /// </summary>
     /// <param name="times"></param>
     /// <param name="callback"></param>
-    public static void PerformEachTime(this int times, [NotNull] Action<int> callback) {
-        0.PerformTimes(times, callback);
-    }
+    public static void PerformEachTime(this int times, [NotNull] Action<int> callback) => 0.PerformTimes(times, callback);
 
     /// <summary>
     /// Performs the given action each time starting from start; count times.
@@ -200,9 +194,7 @@ public static class FunctionalHelpers {
     }
 
 
-    public static bool DoOnFalse(this bool val, [NotNull] Action ifFalse) {
-        return DoOnTrue(!val, ifFalse);
-    }
+    public static bool DoOnFalse(this bool val, [NotNull] Action ifFalse) => DoOnTrue(!val, ifFalse);
 
     /// <summary>
     /// Flatterns a list (in i a  list) to a list by moving all elements in the depth into the same list.
@@ -272,14 +264,13 @@ public static class FunctionalHelpers {
     [NotNull]
     public static NonNullList<TU> FlatFilter<TU>(this IEnumerable<TU> collection,
         [NotNull] Func<TU, bool> includeItem,
-        [CanBeNull] Action<TU> onFiltered = null) {
-        return collection.FlatMap(x => includeItem(x)
-            .IfElseSafe(() => x,
-                () => {
-                    onFiltered?.Invoke(x);
-                    return default(TU);
-                }));
-    }
+        [CanBeNull] Action<TU> onFiltered = null) => collection.FlatMap(x => includeItem(x)
+             .IfElseSafe(() => x,
+                 () =>
+                 {
+                     onFiltered?.Invoke(x);
+                     return default(TU);
+                 }));
 
     [NotNull]
     public static NonNullList<T> FlatTakeFrom<T>(this IEnumerable<int> indexes,
@@ -368,26 +359,18 @@ public static class FunctionalHelpers {
         }
     }
 
-    public static void IfSafeOr<T>([CanBeNull] this T obj, [NotNull] Action<T> action, Action bad) {
-        (obj != null).IfElseSafeVoid(obj, action, bad);
-    }
+    public static void IfSafeOr<T>([CanBeNull] this T obj, [NotNull] Action<T> action, Action bad) => (obj != null).IfElseSafeVoid(obj, action, bad);
 
     [CanBeNull]
-    public static U IfSafe<T, U>([CanBeNull] this T obj, Func<T, U> action) {
-        return obj != null ? action(obj) : default(U);
-    }
+    public static U IfSafe<T, U>([CanBeNull] this T obj, Func<T, U> action) => obj != null ? action(obj) : default(U);
 
     [NotNull]
     public static NonNullList<T> FlatCast<T, U>([NotNull] this IEnumerable<U> lst)
         where T : class
-        where U : class {
-        return FlatMap(lst, x => x as T);
-    }
+        where U : class => FlatMap(lst, x => x as T);
 
     [CanBeNull]
-    public static void IfSafeCast<T>([CanBeNull] this object obj, [NotNull] Action<T> onSafe) where T : class {
-        (obj as T)?.IfSafe(onSafe);
-    }
+    public static void IfSafeCast<T>([CanBeNull] this object obj, [NotNull] Action<T> onSafe) where T : class => (obj as T)?.IfSafe(onSafe);
 
 
     /// <summary>
@@ -420,7 +403,5 @@ public static class FunctionalHelpers {
 
     [NotNull]
     public static NonNullList<T> FlatDistinct<T, TK>([NotNull] this IEnumerable<T> collection,
-        [NotNull] Func<T, TK> keyExtractor) {
-        return FlatCategorizeUniq(collection, keyExtractor).FlatMap(x => x.Value);
-    }
+        [NotNull] Func<T, TK> keyExtractor) => FlatCategorizeUniq(collection, keyExtractor).FlatMap(x => x.Value);
 }

@@ -8,46 +8,30 @@ using CommonSenseCSharp.extensions;
 using JetBrains.Annotations;
 
 public static class DictonaryUtil {
-    public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup) {
-        return dict.GetSafe(lookup, default(T));
-    }
+    public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup) => dict.GetSafe(lookup, default(T));
 
     public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
-        [CanBeNull] T fallback) {
-        return dict.ContainsKey(lookup) ? dict[lookup] : fallback;
-    }
+        [CanBeNull] T fallback) => dict.ContainsKey(lookup) ? dict[lookup] : fallback;
 
-    public static NonNullList<T> GetAllSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, params TK[] lookups) {
-        return lookups.FlatMap(dict.GetSafe);
-    }
+    public static NonNullList<T> GetAllSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, params TK[] lookups) => lookups.FlatMap(dict.GetSafe);
 
     public static void UseValue<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
-        [NotNull] Action<T> onAction) {
-        dict.GetSafe(lookup)?.IfSafe(onAction);
-    }
+        [NotNull] Action<T> onAction) => dict.GetSafe(lookup)?.IfSafe(onAction);
 
     public static void UseAndFlatTransform<T, TK, TU>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
-        [NotNull] Func<T, TU> transform, [NotNull] Action<TU> onSuccess) {
-        dict.FlatPerformIfContainsKey(lookup, x => { transform(x)?.IfSafe(onSuccess); });
-    }
+        [NotNull] Func<T, TU> transform, [NotNull] Action<TU> onSuccess) => dict.FlatPerformIfContainsKey(lookup, x => { transform(x)?.IfSafe(onSuccess); });
 
     [NotNull]
     public static TU UseAndFlatTransform<T, TK, TU>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
-        [NotNull] Func<T, TU> transform) where TU : struct {
-        return dict.GetSafe(lookup).IfSafe(transform);
-    }
+        [NotNull] Func<T, TU> transform) where TU : struct => dict.GetSafe(lookup).IfSafe(transform);
 
     [NotNull]
     public static TU UseAndFlatTransform<T, TK, TU>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
-        [NotNull] Func<T, TU> transform, [NotNull] TU defaultValue) where TU : class {
-        return dict.GetSafe(lookup).IfSafe(transform) ?? defaultValue;
-    }
+        [NotNull] Func<T, TU> transform, [NotNull] TU defaultValue) where TU : class => dict.GetSafe(lookup).IfSafe(transform) ?? defaultValue;
 
 
     public static void AddAll<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] Func<T, TK> transformer,
-        [CanBeNull] params T[] items) {
-        items?.FlatForeach(item => dict.Add(transformer(item), item)); //todo flatmap first ??? or too slow ?
-    }
+        [CanBeNull] params T[] items) => items?.FlatForeach(item => dict.Add(transformer(item), item)); //todo flatmap first ??? or too slow ?
 
     public static void PerformIfContains<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
         [NotNull] Action<T> onContains) {
@@ -72,9 +56,7 @@ public static class DictonaryUtil {
         }
     }
 
-    public static void Add<TK, T>([NotNull] this Dictionary<TK, T> dict, KeyValuePair<TK, T> data) {
-        dict.Add(data.Key, data.Value);
-    }
+    public static void Add<TK, T>([NotNull] this Dictionary<TK, T> dict, KeyValuePair<TK, T> data) => dict.Add(data.Key, data.Value);
 
     [NotNull]
     public static Dictionary<TK, T> AddF<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,

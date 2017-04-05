@@ -35,14 +35,10 @@ namespace CommonSenseCSharp.extensions {
         }
 
         [CanBeNull]
-        public static object FirstOrDefault([NotNull] this IList collection, [CanBeNull] object defaultValue) {
-            return collection.Count > 0 ? collection[0] : defaultValue;
-        }
+        public static object FirstOrDefault([NotNull] this IList collection, [CanBeNull] object defaultValue) => collection.Count > 0 ? collection[0] : defaultValue;
 
         [CanBeNull]
-        public static T FirstOrDefault<T>([NotNull] this IList collection, [CanBeNull] T defaultValue) where T : class {
-            return collection.FirstOrDefault((object) defaultValue) as T;
-        }
+        public static T FirstOrDefault<T>([NotNull] this IList collection, [CanBeNull] T defaultValue) where T : class => collection.FirstOrDefault((object)defaultValue) as T;
 
 
         public static void UseFirstAs<T>([NotNull] this IList collection, Action<T> onFirst) where T : class {
@@ -101,8 +97,6 @@ namespace CommonSenseCSharp.extensions {
         }
 
         [NotNull]
-        public static NonNullList<T> ToNonNullList<T>([NotNull] this IEnumerable<T> list) {
-            return new NonNullList<T>(list);
-        }
+        public static NonNullList<T> ToNonNullList<T>([NotNull] this IEnumerable<T> list) => new NonNullList<T>(list);
     }
 }

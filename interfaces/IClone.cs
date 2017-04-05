@@ -20,8 +20,5 @@ namespace CommonSenseCSharp.interfaces
 }
 public static class CommonICloneExtensions
 {
-    public static string CloneDeep([NotNull] this string str)
-    {
-        return str.Substring(0, str.Length);
-    }
+    public static string CloneDeep([NotNull] this string str) => str.Substring(0, str.Length);
 }

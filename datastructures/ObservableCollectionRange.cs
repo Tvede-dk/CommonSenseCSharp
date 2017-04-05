@@ -22,10 +22,7 @@ namespace CommonSenseCSharp.datastructures
         {
         }
 
-        public ObservableCollectionRange([NotNull] IEnumerable<T> data)
-        {
-            this.AddAll(data);
-        }
+        public ObservableCollectionRange([NotNull] IEnumerable<T> data) => this.AddAll(data);
 
         #endregion
 
@@ -61,33 +58,19 @@ namespace CommonSenseCSharp.datastructures
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-            var objLst = obj as ObservableCollectionRange<T>;
-            if (objLst != null && objLst.Count == Count)
+            if (obj is ObservableCollectionRange<T> objLst && objLst.Count == Count)
             {
                 var result = true;
                 ArrayUtil.ForEach(this, objLst, (a, b) => result |= a == null || !a.Equals(b));
                 return result;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => base.GetHashCode();
 
         [CanBeNull]
-        public T ElementAt(int index)
-        {
-            return Items[index];
-        }
+        public T ElementAt(int index) => Items[index];
 
         #endregion
     }

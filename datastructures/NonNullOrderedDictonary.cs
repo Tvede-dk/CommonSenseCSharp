@@ -74,27 +74,17 @@ namespace CommonSenseCSharp.datastructures{
 
         public int Count => _keyedCollection.Count;
 
-        public IEnumerable<TKey> Keys{
-            get{ return _keyedCollection.Select(x => x.Key); }
-        }
-
-        public IEnumerable<TValue> Values{
-            get{ return _keyedCollection.Select(x => x.Value); }
-        }
-
+        public IEnumerable<TKey> Keys => _keyedCollection.Select(x => x.Key);
+        public IEnumerable<TValue> Values => _keyedCollection.Select(x => x.Value);
         private IEqualityComparer<TKey> Comparer{ get; set; }
 
         #endregion
 
         #region Constructors
 
-        public NonNullOrderedDictonary(){
-            Initialize();
-        }
+        public NonNullOrderedDictonary() => Initialize();
 
-        public NonNullOrderedDictonary(IEqualityComparer<TKey> comparer){
-            Initialize(comparer);
-        }
+        public NonNullOrderedDictonary(IEqualityComparer<TKey> comparer) => Initialize(comparer);
 
         public NonNullOrderedDictonary(IOrderedDictionary<TKey, TValue> dictionary){
             Initialize();
@@ -124,17 +114,11 @@ namespace CommonSenseCSharp.datastructures{
             }
         }
 
-        public void Add(TKey key, TValue value){
-            _keyedCollection.Add(new KeyValuePair<TKey, TValue>(key, value));
-        }
+        public void Add(TKey key, TValue value) => _keyedCollection.Add(new KeyValuePair<TKey, TValue>(key, value));
 
-        public void Clear(){
-            _keyedCollection.Clear();
-        }
+        public void Clear() => _keyedCollection.Clear();
 
-        public void Insert(int index, TKey key, TValue value){
-            _keyedCollection.Insert(index, new KeyValuePair<TKey, TValue>(key, value));
-        }
+        public void Insert(int index, TKey key, TValue value) => _keyedCollection.Insert(index, new KeyValuePair<TKey, TValue>(key, value));
 
         public int IndexOf(TKey key){
             if (_keyedCollection.Contains(key)){
@@ -145,17 +129,11 @@ namespace CommonSenseCSharp.datastructures{
             }
         }
 
-        public bool ContainsValue(TValue value){
-            return Values.Contains(value);
-        }
+        public bool ContainsValue(TValue value) => Values.Contains(value);
 
-        public bool ContainsValue(TValue value, IEqualityComparer<TValue> comparer){
-            return Values.Contains(value, comparer);
-        }
+        public bool ContainsValue(TValue value, IEqualityComparer<TValue> comparer) => Values.Contains(value, comparer);
 
-        public bool ContainsKey(TKey key){
-            return _keyedCollection.Contains(key);
-        }
+        public bool ContainsKey(TKey key) => _keyedCollection.Contains(key);
 
         public KeyValuePair<TKey, TValue> GetItem(int index){
             if (index < 0 || index >= _keyedCollection.Count){
@@ -180,13 +158,9 @@ namespace CommonSenseCSharp.datastructures{
             _keyedCollection[index] = kvp;
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator(){
-            return _keyedCollection.GetEnumerator();
-        }
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _keyedCollection.GetEnumerator();
 
-        public bool Remove(TKey key){
-            return _keyedCollection.Remove(key);
-        }
+        public bool Remove(TKey key) => _keyedCollection.Remove(key);
 
         public void RemoveAt(int index){
             if (index < 0 || index >= _keyedCollection.Count){
@@ -238,52 +212,34 @@ namespace CommonSenseCSharp.datastructures{
 
         #region sorting
 
-        public void SortKeys(){
-            _keyedCollection.SortByKeys();
-        }
+        public void SortKeys() => _keyedCollection.SortByKeys();
 
-        public void SortKeys(IComparer<TKey> comparer){
-            _keyedCollection.SortByKeys(comparer);
-        }
+        public void SortKeys(IComparer<TKey> comparer) => _keyedCollection.SortByKeys(comparer);
 
-        public void SortKeys(Comparison<TKey> comparison){
-            _keyedCollection.SortByKeys(comparison);
-        }
+        public void SortKeys(Comparison<TKey> comparison) => _keyedCollection.SortByKeys(comparison);
 
         public void SortValues(){
             var comparer = Comparer<TValue>.Default;
             SortValues(comparer);
         }
 
-        public void SortValues(IComparer<TValue> comparer){
-            _keyedCollection.Sort((x, y) => comparer.Compare(x.Value, y.Value));
-        }
+        public void SortValues(IComparer<TValue> comparer) => _keyedCollection.Sort((x, y) => comparer.Compare(x.Value, y.Value));
 
-        public void SortValues(Comparison<TValue> comparison){
-            _keyedCollection.Sort((x, y) => comparison(x.Value, y.Value));
-        }
+        public void SortValues(Comparison<TValue> comparison) => _keyedCollection.Sort((x, y) => comparison(x.Value, y.Value));
 
         #endregion
 
         #region IDictionary<TKey, TValue>
 
-        void IDictionary<TKey, TValue>.Add(TKey key, TValue value){
-            Add(key, value);
-        }
+        void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
 
-        bool IDictionary<TKey, TValue>.ContainsKey(TKey key){
-            return ContainsKey(key);
-        }
+        bool IDictionary<TKey, TValue>.ContainsKey(TKey key) => ContainsKey(key);
 
         ICollection<TKey> IDictionary<TKey, TValue>.Keys => Keys.ToList();
 
-        bool IDictionary<TKey, TValue>.Remove(TKey key){
-            return Remove(key);
-        }
+        bool IDictionary<TKey, TValue>.Remove(TKey key) => Remove(key);
 
-        bool IDictionary<TKey, TValue>.TryGetValue(TKey key, out TValue value){
-            return TryGetValue(key, out value);
-        }
+        bool IDictionary<TKey, TValue>.TryGetValue(TKey key, out TValue value) => TryGetValue(key, out value);
 
         ICollection<TValue> IDictionary<TKey, TValue>.Values => Values.ToList();
 
@@ -296,65 +252,45 @@ namespace CommonSenseCSharp.datastructures{
 
         #region ICollection<KeyValuePair<TKey, TValue>>
 
-        void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item){
-            _keyedCollection.Add(item);
-        }
+        void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item) => _keyedCollection.Add(item);
 
-        void ICollection<KeyValuePair<TKey, TValue>>.Clear(){
-            _keyedCollection.Clear();
-        }
+        void ICollection<KeyValuePair<TKey, TValue>>.Clear() => _keyedCollection.Clear();
 
-        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item){
-            return _keyedCollection.Contains(item);
-        }
+        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item) => _keyedCollection.Contains(item);
 
-        void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex){
-            _keyedCollection.CopyTo(array, arrayIndex);
-        }
+        void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => _keyedCollection.CopyTo(array, arrayIndex);
 
         int ICollection<KeyValuePair<TKey, TValue>>.Count => _keyedCollection.Count;
 
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
 
-        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item){
-            return _keyedCollection.Remove(item);
-        }
+        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item) => _keyedCollection.Remove(item);
 
         #endregion
 
         #region IEnumerable<KeyValuePair<TKey, TValue>>
 
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator(){
-            return GetEnumerator();
-        }
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() => GetEnumerator();
 
         #endregion
 
         #region IEnumerable
 
-        IEnumerator IEnumerable.GetEnumerator(){
-            return new DictionaryEnumerator<TKey, TValue>(this);
-        }
+        IEnumerator IEnumerable.GetEnumerator() => new DictionaryEnumerator<TKey, TValue>(this);
 
         #endregion
 
         #region IOrderedDictionary
 
-        void Insert(int index, object key, object value){
-            Insert(index, (TKey) key, (TValue) value);
-        }
+        void Insert(int index, object key, object value) => Insert(index, (TKey)key, (TValue)value);
 
         #endregion
 
         #region IDictionary
 
-        void Add(object key, object value){
-            Add((TKey) key, (TValue) value);
-        }
+        void Add(object key, object value) => Add((TKey)key, (TValue)value);
 
-        bool Contains(object key){
-            return _keyedCollection.Contains((TKey) key);
-        }
+        bool Contains(object key) => _keyedCollection.Contains((TKey)key);
 
         bool IsFixedSize => false;
 
@@ -362,9 +298,7 @@ namespace CommonSenseCSharp.datastructures{
 
         //  ICollection Keys => (ICollection) this.Keys;
 
-        void Remove(object key){
-            Remove((TKey) key);
-        }
+        void Remove(object key) => Remove((TKey)key);
 
         //ICollection Values => (ICollection) this.Values;
 
@@ -377,9 +311,7 @@ namespace CommonSenseCSharp.datastructures{
 
         #region ICollection
 
-        void ICollection.CopyTo(Array array, int index){
-            ((ICollection) _keyedCollection).CopyTo(array, index);
-        }
+        void ICollection.CopyTo(Array array, int index) => ((ICollection)_keyedCollection).CopyTo(array, index);
 
         int ICollection.Count => ((ICollection) _keyedCollection).Count;
 
@@ -395,26 +327,12 @@ namespace CommonSenseCSharp.datastructures{
         private readonly Func<TItem, TKey> _getKeyForItemDelegate;
 
         public KeyedCollection2(Func<TItem, TKey> getKeyForItemDelegate)
-            : base(){
-            if (getKeyForItemDelegate == null) {
-                throw new ArgumentNullException(DelegateNullExceptionMessage);
-            }
-
-            _getKeyForItemDelegate = getKeyForItemDelegate;
-        }
+            : base() => _getKeyForItemDelegate = getKeyForItemDelegate ?? throw new ArgumentNullException(DelegateNullExceptionMessage);
 
         public KeyedCollection2(Func<TItem, TKey> getKeyForItemDelegate, IEqualityComparer<TKey> comparer)
-            : base(comparer){
-            if (getKeyForItemDelegate == null) {
-                throw new ArgumentNullException(DelegateNullExceptionMessage);
-            }
+            : base(comparer) => _getKeyForItemDelegate = getKeyForItemDelegate ?? throw new ArgumentNullException(DelegateNullExceptionMessage);
 
-            _getKeyForItemDelegate = getKeyForItemDelegate;
-        }
-
-        protected override TKey GetKeyForItem(TItem item){
-            return _getKeyForItemDelegate(item);
-        }
+        protected override TKey GetKeyForItem(TItem item) => _getKeyForItemDelegate(item);
 
         public void SortByKeys(){
             var comparer = Comparer<TKey>.Default;
@@ -453,19 +371,11 @@ namespace CommonSenseCSharp.datastructures{
 
         #region Constructors
 
-        public Comparer2(Comparison<T> comparison){
-            if (comparison == null) {
-                throw new ArgumentNullException(nameof(comparison));
-            }
-
-            _compareFunction = comparison;
-        }
+        public Comparer2(Comparison<T> comparison) => _compareFunction = comparison ?? throw new ArgumentNullException(nameof(comparison));
 
         #endregion
 
-        public override int Compare(T arg1, T arg2){
-            return _compareFunction(arg1, arg2);
-        }
+        public override int Compare(T arg1, T arg2) => _compareFunction(arg1, arg2);
     }
 
     /// <summary>
@@ -477,21 +387,13 @@ namespace CommonSenseCSharp.datastructures{
         [NotNull]
         private readonly IEnumerator<KeyValuePair<TKey, TValue>> _impl;
 
-        public void Dispose(){
-            _impl.Dispose();
-        }
+        public void Dispose() => _impl.Dispose();
 
-        public DictionaryEnumerator(IDictionary<TKey, TValue> value){
-            _impl = value.GetEnumerator();
-        }
+        public DictionaryEnumerator(IDictionary<TKey, TValue> value) => _impl = value.GetEnumerator();
 
-        public void Reset(){
-            _impl.Reset();
-        }
+        public void Reset() => _impl.Reset();
 
-        public bool MoveNext(){
-            return _impl.MoveNext();
-        }
+        public bool MoveNext() => _impl.MoveNext();
 
         public DictionaryEntry Entry{
             get{

@@ -22,10 +22,8 @@ public static class StringBuilderExtensions {
     //// index- the start location to replace at (0-based)
     //// length - the number of characters to be removed before inserting
     //// replace - the string that is replacing characters
-    public static string ReplaceAt(this string str, int index, int length, string replace) {
-        return str.Remove(index, Math.Min(length, str.Length - index))
+    public static string ReplaceAt(this string str, int index, int length, string replace) => str.Remove(index, Math.Min(length, str.Length - index))
             .Insert(index, replace ?? "");
-    }
 
     public static string AppendIf(this string str, string otherStr, bool shouldAppend) {
         if (shouldAppend) {
@@ -34,21 +32,13 @@ public static class StringBuilderExtensions {
         return str;
     }
 
-    public static int IntValue([NotNull] this string str, int otherWise) {
-        return int.TryParse(str, out var temp) ? temp : otherWise;
-    }
+    public static int IntValue([NotNull] this string str, int otherWise) => int.TryParse(str, out var temp) ? temp : otherWise;
 
-    public static float FloatValue([NotNull] this string str, float otherWise) {
-        return float.TryParse(str, out var temp) ? temp : otherWise;
-    }
+    public static float FloatValue([NotNull] this string str, float otherWise) => float.TryParse(str, out var temp) ? temp : otherWise;
 
-    public static long LongValue([NotNull] this string str, long otherWise) {
-        return long.TryParse(str, out var temp) ? temp : otherWise;
-    }
+    public static long LongValue([NotNull] this string str, long otherWise) => long.TryParse(str, out var temp) ? temp : otherWise;
 
-    public static double IntValue([NotNull] this string str, double otherWise) {
-        return double.TryParse(str, out var temp) ? temp : otherWise;
-    }
+    public static double IntValue([NotNull] this string str, double otherWise) => double.TryParse(str, out var temp) ? temp : otherWise;
 
     [NotNull]
     public static string Repeate([NotNull] this string str, int numberOfTimesToRepeate) {
@@ -75,8 +65,7 @@ public static class StringBuilderExtensions {
     /// <param name="str"></param>
     /// <param name="strs"></param>
     /// <returns>true if all the strings are contained.</returns>
-    public static bool ContainsAll([NotNull] this string str, [NotNull] params string[] strs) {
+    public static bool ContainsAll([NotNull] this string str, [NotNull] params string[] strs) =>
         //TODO use a better impl, as this is pretty slow.
-        return strs.FlatMap(str.Contains).FlatFlattern(true, (x, y) => x &= y);
-    }
+        strs.FlatMap(str.Contains).FlatFlattern(true, (x, y) => x &= y);
 }
