@@ -7,7 +7,8 @@ using CommonSenseCSharp.datastructures;
 using CommonSenseCSharp.extensions;
 using JetBrains.Annotations;
 
-public static class DictonaryUtil {
+public static class DictonaryUtil
+{
     public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup) => dict.GetSafe(lookup, default(T));
 
     public static T GetSafe<T, TK>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
@@ -37,24 +38,32 @@ public static class DictonaryUtil {
         [CanBeNull] params T[] items) => items?.FlatForeach(item => dict.Add(transformer(item), item)); //todo flatmap first ??? or too slow ?
 
     public static void PerformIfContains<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
-        [NotNull] Action<T> onContains) {
-        if (dict.ContainsKey(key)) {
+        [NotNull] Action<T> onContains)
+    {
+        if (dict.ContainsKey(key))
+        {
             onContains(dict[key]);
         }
     }
 
     public static void FlatPerformIfContainsKey<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
-        [NotNull] Action<T> onContains) {
-        if (dict.ContainsKey((key))) {
+        [NotNull] Action<T> onContains)
+    {
+        if (dict.ContainsKey((key)))
+        {
             dict[key]?.IfSafe(onContains);
         }
     }
 
     public static void FlatPerformIfContainsKey<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
-        [NotNull] Action<T> onContains, [NotNull] Action ifNot) {
-        if (dict.ContainsKey((key))) {
+        [NotNull] Action<T> onContains, [NotNull] Action ifNot)
+    {
+        if (dict.ContainsKey((key)))
+        {
             dict[key]?.IfSafe(onContains);
-        } else {
+        }
+        else
+        {
             ifNot();
         }
     }
@@ -63,36 +72,56 @@ public static class DictonaryUtil {
 
     [NotNull]
     public static Dictionary<TK, T> AddF<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
-        [NotNull] T value) {
+        [NotNull] T value)
+    {
         dict.Add(key, value);
         return dict;
     }
 
     [NotNull]
     public static Dictionary<string, T> RemoveAll<T>([NotNull] this Dictionary<string, T> dict,
-        [CanBeNull] params string[] toRemove) {
+        [CanBeNull] params string[] toRemove)
+    {
         toRemove?.FlatForeach(dict.Remove);
         return dict;
     }
 
     [NotNull]
-    public static void ClearAndSet<T>([NotNull] this Dictionary<string, T> dict, IDictionary<string, T> otherDictToCopy) {
+    public static void ClearAndSet<T>([NotNull] this Dictionary<string, T> dict, IDictionary<string, T> otherDictToCopy)
+    {
         dict.Clear();
         otherDictToCopy.FlatForeach(dict.Add);
     }
 
     [CanBeNull]
-    public static T GetAndRemove<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key) {
+    public static T GetAndRemove<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key)
+    {
         var temp = dict.GetSafe(key);
         dict.Remove(key);
         return temp;
     }
 
-    public static void InsertInto<TKey, TValue, U>([NotNull] this Dictionary<TKey, U> dict,
-        [NotNull] TKey key, [NotNull] TValue value, Func<U> listCreator) where U : IList<TValue> {
-        if (!dict.ContainsKey(key)) {
+    public static void InsertInto<TKey, TValue, U>([NotNull] this IDictionary<TKey, U> dict,
+        [NotNull] TKey key, [NotNull] TValue value, Func<U> listCreator) where U : IList<TValue>
+    {
+        if (!dict.ContainsKey(key))
+        {
             dict.Add(key, listCreator());
         }
         dict[key].Add(value);
+    }
+
+    public static void AddOrUpdate<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dict, [NotNull] TKey key,
+        [NotNull] TValue value)
+    {
+        if (dict.ContainsKey(key))
+        {
+            dict[key] = value;
+        }
+        else
+        {
+            dict.Add(key, value);
+        }
+
     }
 }
