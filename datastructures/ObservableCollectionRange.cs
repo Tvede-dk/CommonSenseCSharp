@@ -4,44 +4,37 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
+using CommonSenseCSharp.interfaces;
 using JetBrains.Annotations;
 
-namespace CommonSenseCSharp.datastructures
-{
+namespace CommonSenseCSharp.datastructures {
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-
-    public class ObservableCollectionRange<T> : ObservableCollection<T>
-    {
-
+    public class ObservableCollectionRange<T> : ObservableCollection<T> {
         #region constructors
 
-        public ObservableCollectionRange()
-        {
+        public ObservableCollectionRange() {
         }
 
-        public ObservableCollectionRange([NotNull] IEnumerable<T> data) => this.AddAll(data);
+        public ObservableCollectionRange([NotNull] IEnumerable<T> data) => AddAll(data);
 
         #endregion
 
         #region range features
 
-        public void AddAll([NotNull] IEnumerable<T> list)
-        {
+        public void AddAll([NotNull] IEnumerable<T> list) {
             list.Foreach(Items.Add);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list));
         }
 
-        public void ClearAndAddAll([NotNull] IEnumerable<T> list)
-        {
+        public void ClearAndAddAll([NotNull] IEnumerable<T> list) {
             Items.Clear();
             AddAll(list);
         }
 
-        public void RemoveAll([NotNull] IEnumerable<T> listToRemove)
-        {
+        public void RemoveAll([NotNull] IEnumerable<T> listToRemove) {
             listToRemove.Foreach(Items.Remove);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, listToRemove));
         }
@@ -56,10 +49,8 @@ namespace CommonSenseCSharp.datastructures
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is ObservableCollectionRange<T> objLst && objLst.Count == Count)
-            {
+        public override bool Equals(object obj) {
+            if (obj is ObservableCollectionRange<T> objLst && objLst.Count == Count) {
                 var result = true;
                 ArrayUtil.ForEach(this, objLst, (a, b) => result |= a == null || !a.Equals(b));
                 return result;
@@ -73,5 +64,11 @@ namespace CommonSenseCSharp.datastructures
         public T ElementAt(int index) => Items[index];
 
         #endregion
+    }
+
+    public static class ObservableCollectionRangeExtensions {
+        public static ObservableCollectionRange<T> CloneDeep<T>([NotNull] this ObservableCollectionRange<T> obsList) where T : IClone<T> {
+            return new ObservableCollectionRange<T>(obsList.FlatMap(x => x));
+        }
     }
 }

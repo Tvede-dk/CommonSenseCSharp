@@ -43,7 +43,6 @@ namespace CommonSenseCSharp.datastructures{
 
         void SetValue([NotNull] TKey key, [NotNull] TValue value);
 
-        [NotNull]
         KeyValuePair<TKey, TValue> GetItem([PositiveIntRange] int index);
 
         void SetItem([PositiveIntRange] int index, [NotNull] TValue value);

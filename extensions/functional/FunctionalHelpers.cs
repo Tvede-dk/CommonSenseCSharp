@@ -417,7 +417,6 @@ public static class FunctionalHelpers
         where T : class
         where U : class => FlatMap(lst, x => x as T);
 
-    [CanBeNull]
     public static void IfSafeCast<T>([CanBeNull] this object obj, [NotNull] Action<T> onSafe) where T : class => (obj as T)?.IfSafe(onSafe);
 
 

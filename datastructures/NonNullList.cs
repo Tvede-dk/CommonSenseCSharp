@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CommonSenseCSharp.interfaces;
 using JetBrains.Annotations;
 
-namespace CommonSenseCSharp.datastructures
-{
+namespace CommonSenseCSharp.datastructures {
     /// <summary>
     /// a proxy class that basically discards all null related queries on this list, thus making sure every element inside is NOT null.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class NonNullList<T> : List<T>
-    {
+    public class NonNullList<T> : List<T> {
         public NonNullList([NotNull] T[] variable) => AddRange(variable);
 
-        public NonNullList()
-        {
+        public NonNullList() {
         }
 
         public NonNullList([CanBeNull] IEnumerable<T> input) => AddRange(input);
 
-        public NonNullList(int capacity) : base(capacity)
-        {
+        public NonNullList(int capacity) : base(capacity) {
         }
 
         public NonNullList(T initalItem) => Add(initalItem);
@@ -29,10 +26,8 @@ namespace CommonSenseCSharp.datastructures
         /// adds a single item to this list (iff not null)
         /// </summary>
         /// <param name="item">the item to add, iff null then it does nothing </param>
-        public new void Add([CanBeNull] T item)
-        {
-            if (item != null)
-            {
+        public new void Add([CanBeNull] T item) {
+            if (item != null) {
                 base.Add(item);
             }
         }
@@ -40,20 +35,16 @@ namespace CommonSenseCSharp.datastructures
         public void Add([CanBeNull] params T[] items) => items?.Foreach(Add);
 
         [NotNull]
-        public NonNullList<T> RemoveLast()
-        {
-            if (Count > 0)
-            {
+        public NonNullList<T> RemoveLast() {
+            if (Count > 0) {
                 RemoveAt(Count - 1);
             }
             return this;
         }
 
         [NotNull]
-        public NonNullList<T> RemoveFirst()
-        {
-            if (Count > 0)
-            {
+        public NonNullList<T> RemoveFirst() {
+            if (Count > 0) {
                 RemoveAt(0);
             }
             return this;
@@ -72,15 +63,13 @@ namespace CommonSenseCSharp.datastructures
         public void AddRange([NotNull] params T[] collection) => collection?.FlatForeach(Add);
 
         [NotNull]
-        public NonNullList<T> AddRangeFluent([CanBeNull] IEnumerable<T> collection)
-        {
+        public NonNullList<T> AddRangeFluent([CanBeNull] IEnumerable<T> collection) {
             AddRange(collection);
             return this;
         }
 
         [Pure]
-        public NonNullList<T> GetSafeRange(int index, int count)
-        {
+        public NonNullList<T> GetSafeRange(int index, int count) {
             var res = new NonNullList<T>();
             index.PerformTimes(count, x => res.Add(this[x]));
             return res;
@@ -103,37 +92,39 @@ namespace CommonSenseCSharp.datastructures
             => new NonNullList<T>(item).AddRangeFluent(otherLists);
 
         [NotNull]
-        public NonNullList<T> Limit([PositiveIntRange] int limitListCount)
-        {
-            if (Count > limitListCount && limitListCount > 0)
-            {
+        public NonNullList<T> Limit([PositiveIntRange] int limitListCount) {
+            if (Count > limitListCount && limitListCount > 0) {
                 return GetSafeRange(0, limitListCount);
             }
             return this;
         }
 
-        public void Repeate([PositiveIntRange] int toSize)
-        {
-            if (toSize <= Count || Count == 0)
-            {
+        public void Repeate([PositiveIntRange] int toSize) {
+            if (toSize <= Count || Count == 0) {
                 return;
             }
-            for (var i = Count; i < toSize; i++)
-            {
+            for (var i = Count; i < toSize; i++) {
                 Add(this.First());
             }
         }
 
-        public void AddOrRemove([NotNull] T item, bool shouldAdd)
-        {
-            if (shouldAdd)
-            {
+        public void AddOrRemove([NotNull] T item, bool shouldAdd) {
+            if (shouldAdd) {
                 Add(item);
-            }
-            else
-            {
+            } else {
                 Remove(item);
             }
+        }
+    }
+
+
+    public static class NonNullListExtensions {
+        public static NonNullList<T> CloneDeep<T>([NotNull] this NonNullList<T> lst) where T : IClone<T> {
+            return new NonNullList<T>(lst.FlatMap(x => x.CloneDeep()));
+        }
+
+        public static NonNullList<string> CloneDeep([NotNull] this NonNullList<string> lst) {
+            return new NonNullList<string>(lst.FlatMap(x => x.CloneDeep()));
         }
     }
 }

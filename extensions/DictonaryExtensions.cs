@@ -25,7 +25,6 @@ public static class DictonaryUtil
     public static void UseAndFlatTransform<T, TK, TU>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
         [NotNull] Func<T, TU> transform, [NotNull] Action<TU> onSuccess) => dict.FlatPerformIfContainsKey(lookup, x => { transform(x)?.IfSafe(onSuccess); });
 
-    [NotNull]
     public static TU UseAndFlatTransform<T, TK, TU>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK lookup,
         [NotNull] Func<T, TU> transform) where TU : struct => dict.GetSafe(lookup).IfSafe(transform);
 
@@ -86,7 +85,6 @@ public static class DictonaryUtil
         return dict;
     }
 
-    [NotNull]
     public static void ClearAndSet<T>([NotNull] this Dictionary<string, T> dict, IDictionary<string, T> otherDictToCopy)
     {
         dict.Clear();
