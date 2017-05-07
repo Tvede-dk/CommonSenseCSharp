@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace CommonSenseCSharp.datastructures
 {
-    public class SafePair<T, TU>
+    public struct SafePair<T, TU>
     {
         [NotNull] public readonly T First;
         [NotNull] public readonly TU Second;
