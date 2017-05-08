@@ -479,4 +479,12 @@ public static class FunctionalHelpers
     [NotNull]
     public static NonNullList<T> FlatDistinct<T, TK>([NotNull] this IEnumerable<T> collection,
         [NotNull] Func<T, TK> keyExtractor) => FlatCategorizeUniq(collection, keyExtractor).FlatMap(x => x.Value);
+
+
+
+    public static void FlatInvoke([NotNull] this IEnumerable<Action> flatActions) => flatActions.FlatForeach(x => x.Invoke());
+
+    public static void FlatInvoke<T>([NotNull] this IEnumerable<Action<T>> flatActions, [NotNull] T input) => flatActions.FlatForeach(x => x.Invoke(input));
+
+
 }
