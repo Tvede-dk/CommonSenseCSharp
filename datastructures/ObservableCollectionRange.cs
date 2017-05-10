@@ -15,12 +15,31 @@ namespace CommonSenseCSharp.datastructures {
     public class ObservableCollectionRange<T> : ObservableCollection<T> {
         #region constructors
 
+        private bool _isSuspended = false;
+
         public ObservableCollectionRange() {
         }
 
         public ObservableCollectionRange([NotNull] IEnumerable<T> data) => AddAll(data);
 
         #endregion
+
+        public void SuspendNotifications([NotNull] Action whileSuspened) {
+            _isSuspended = true;
+            try {
+                whileSuspened();
+            } catch (Exception) {
+                // ignored
+            }
+            _isSuspended = false;
+        }
+
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e) {
+            if (_isSuspended) {
+                return;
+            }
+            base.OnCollectionChanged(e);
+        }
 
         #region range features
 
