@@ -119,12 +119,8 @@ namespace CommonSenseCSharp.datastructures {
 
 
     public static class NonNullListExtensions {
-        public static NonNullList<T> CloneDeep<T>([NotNull] this NonNullList<T> lst) where T : IClone<T> {
-            return new NonNullList<T>(lst.FlatMap(x => x.CloneDeep()));
-        }
+        public static NonNullList<T> CloneDeep<T>([NotNull] this NonNullList<T> lst) where T : IClone<T> => new NonNullList<T>(lst.FlatMap(x => x.CloneDeep()));
 
-        public static NonNullList<string> CloneDeep([NotNull] this NonNullList<string> lst) {
-            return new NonNullList<string>(lst.FlatMap(x => x.CloneDeep()));
-        }
+        public static NonNullList<string> CloneDeep([NotNull] this NonNullList<string> lst) => new NonNullList<string>(lst.FlatMap(x => x.CloneDeep()));
     }
 }

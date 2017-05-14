@@ -1,43 +1,43 @@
 ﻿using System.Linq;
 using CommonSenseCSharp.datastructures;
-using NUnit.Framework;
+using Xunit;
 
 namespace Tests{
-    [TestFixture]
+    
     public class FunctionalRecursiveTest{
-        [Test]
+        [Fact]
         public void TestDfsSimple(){
             var nodes = new TestItem();
             var counter = 0;
             FunctionalRecursive.OnEachDepthFirstDecent(nodes, x => counter++, x => x.Children);
-            Assert.AreEqual(counter, 1);
+            Assert.Equal(counter, 1);
         }
 
-        [Test]
+        [Fact]
         public void TestDfsSimpleRecursiveCount(){
             var nodes = new TestItem();
             nodes.Children.Add(new TestItem());
             var counter = 0;
             FunctionalRecursive.OnEachDepthFirstDecent(nodes, x => counter++, x => x.Children);
-            Assert.AreEqual(counter, 2);
+            Assert.Equal(counter, 2);
         }
 
-        [Test]
+        [Fact]
         public void TestDfsSimpleRecursiveOrder(){
             var nodes = new TestItem{MagicName = "2"};
             nodes.Children.Add(new TestItem{MagicName = "1"});
             var itterationList = new NonNullList<string>();
             FunctionalRecursive.OnEachDepthFirstDecent(nodes, x => itterationList.Add(x.MagicName), x => x.Children);
-            Assert.AreEqual(itterationList.Count, 2);
-            Assert.AreEqual(itterationList.First(), "1");
-            Assert.AreEqual(itterationList.Last(), "2");
+            Assert.Equal(itterationList.Count, 2);
+            Assert.Equal(itterationList.First(), "1");
+            Assert.Equal(itterationList.Last(), "2");
         }
 
         /// <summary>
         /// this is a pretty large test.
         /// creates a rather large tree, which should exercise it thougl "all" weierd cases.
         /// </summary>
-        [Test]
+        [Fact]
         public void TestDfsSimpleRecursiveOrderLarge(){
             var startNode = new TestItem("11");
             //create smaller subtrees
@@ -62,8 +62,8 @@ namespace Tests{
             var itterationList = new NonNullList<string>();
             FunctionalRecursive.OnEachDepthFirstDecent(startNode, x => itterationList.Add(x.MagicName),
                 x => x.Children);
-            Assert.AreEqual(itterationList.Count, 11);
-            Assert.AreEqual(itterationList,
+            Assert.Equal(itterationList.Count, 11);
+            Assert.Equal(itterationList,
                 NonNullList<string>.CreateFrom("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"));
         }
     }
@@ -72,9 +72,7 @@ namespace Tests{
         public NonNullList<TestItem> Children = new NonNullList<TestItem>();
         public string MagicName = string.Empty;
 
-        public TestItem(string name){
-            MagicName = name;
-        }
+        public TestItem(string name) => MagicName = name;
 
         public TestItem(){
         }

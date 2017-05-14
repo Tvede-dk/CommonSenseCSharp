@@ -86,8 +86,7 @@ namespace CommonSenseCSharp.datastructures {
     }
 
     public static class ObservableCollectionRangeExtensions {
-        public static ObservableCollectionRange<T> CloneDeep<T>([NotNull] this ObservableCollectionRange<T> obsList) where T : IClone<T> {
-            return new ObservableCollectionRange<T>(obsList.FlatMap(x => x));
-        }
+        public static ObservableCollectionRange<T> CloneDeep<T>([NotNull] this ObservableCollectionRange<T> obsList) where T : IClone<T>
+            => new ObservableCollectionRange<T>(obsList.FlatMap(x => x));
     }
 }

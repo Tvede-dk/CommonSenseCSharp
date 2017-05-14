@@ -55,6 +55,7 @@
     <Compile Include="extensions\functional\FunctionalRecursive.cs" />
     <Compile Include="extensions\HashSet.cs" />
     <Compile Include="extensions\KeyPairExtensions.cs" />
+    <Compile Include="extensions\ListExtensions.cs" />
     <Compile Include="extensions\ObjectExtensions.cs" />
     <Compile Include="extensions\PrimitiveExtensions.cs" />
     <Compile Include="extensions\StringBuilderExtensions.cs" />
