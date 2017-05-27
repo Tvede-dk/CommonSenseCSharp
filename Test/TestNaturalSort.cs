@@ -45,7 +45,7 @@ namespace Tests {
 
         }
 
-        private TimeSpan Time(Action toTime) {
+        private static TimeSpan Time(Action toTime) {
             var timer = Stopwatch.StartNew();
             toTime();
             timer.Stop();

@@ -36,7 +36,7 @@ namespace CommonSenseCSharp.extensions{
         public static int IndexOfComparar([NotNull] StringBuilder stringBuilder, [NotNull] string value,
             [NotNull] Func<char, char, bool> compFunc,
             [PositiveIntRange] int startIndex = 0){
-            var maxSearchLength = (stringBuilder.Length - value.Length) + 1;
+            var maxSearchLength = stringBuilder.Length - value.Length + 1;
 
             for (var i = startIndex; i < maxSearchLength; i++){
                 if (compFunc(stringBuilder[i], value[0])){

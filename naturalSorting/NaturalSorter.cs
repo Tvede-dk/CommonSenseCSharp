@@ -4,17 +4,16 @@ using System.Collections.Generic;
 using System.Text;
 
 public static class NaturalSort {
+    public static NonNullList<T> SortNatural<T>(this NonNullList<T> list, Func<T, string> extractor) => list.FlatMap(x => new InternalStructure<T>(x, extractor(x))).SortInternalStructure();
 
-    public static NonNullList<T> SortNatural<T>(this NonNullList<T> list, Func<T, string> extractor) => list.FlatMap(x => { return new InternalStructure<T>(x, extractor(x)); }).SortInternalStructure();
+    public static NonNullList<string> SortNatural(this IEnumerable<string> list) => list?.FlatMap(x => new InternalStructure<string>(x, x)).SortInternalStructure() ?? new NonNullList<string>();
 
-    public static NonNullList<string> SortNatural(this IEnumerable<string> list) => list?.FlatMap(x => { return new InternalStructure<string>(x, x); }).SortInternalStructure() ?? new NonNullList<string>();
     private static NonNullList<T> SortInternalStructure<T>(this NonNullList<InternalStructure<T>> newLst) {
         newLst.Sort((lhs, rhs) => lhs.CompareTo(rhs));
         return newLst.FlatMap(x => x.GetObj());
     }
 
     private class InternalStructure<T> {
-
         private readonly T _obj;
 
         private readonly string _value;
@@ -22,8 +21,8 @@ public static class NaturalSort {
         private readonly NonNullList<TypeContent> _order = new NonNullList<TypeContent>();
 
         public InternalStructure(T orgObj, string value) {
-            this._obj = orgObj;
-            this._value = value;
+            _obj = orgObj;
+            _value = value;
             ParseValue();
         }
 
@@ -47,8 +46,6 @@ public static class NaturalSort {
             if (builder.Length > 0) {
                 _order.Add(new TypeContent(isString, startIndex, _value.Length, this));
             }
-
-
         }
 
         public int CompareTo(InternalStructure<T> rhs) {
@@ -68,10 +65,10 @@ public static class NaturalSort {
             private readonly int _endIndex;
 
             public TypeContent(bool isString, int startIndex, int endIndex, InternalStructure<T> structure) {
-                this.IsNumber = !isString;
-                this._startIndex = startIndex;
-                this._endIndex = endIndex;
-                this._structure = structure;
+                IsNumber = !isString;
+                _startIndex = startIndex;
+                _endIndex = endIndex;
+                _structure = structure;
             }
 
             public int CompareTo(TypeContent other) {

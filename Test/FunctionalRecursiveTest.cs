@@ -69,7 +69,7 @@ namespace Tests{
     }
 
     class TestItem{
-        public NonNullList<TestItem> Children = new NonNullList<TestItem>();
+        public readonly NonNullList<TestItem> Children = new NonNullList<TestItem>();
         public string MagicName = string.Empty;
 
         public TestItem(string name) => MagicName = name;

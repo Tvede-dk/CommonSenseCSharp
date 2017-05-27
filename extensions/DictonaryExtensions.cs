@@ -48,7 +48,7 @@ public static class DictonaryUtil
     public static void FlatPerformIfContainsKey<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
         [NotNull] Action<T> onContains)
     {
-        if (dict.ContainsKey((key)))
+        if (dict.ContainsKey(key))
         {
             dict[key]?.IfSafe(onContains);
         }
@@ -57,7 +57,7 @@ public static class DictonaryUtil
     public static void FlatPerformIfContainsKey<TK, T>([NotNull] this Dictionary<TK, T> dict, [NotNull] TK key,
         [NotNull] Action<T> onContains, [NotNull] Action ifNot)
     {
-        if (dict.ContainsKey((key)))
+        if (dict.ContainsKey(key))
         {
             dict[key]?.IfSafe(onContains);
         }
