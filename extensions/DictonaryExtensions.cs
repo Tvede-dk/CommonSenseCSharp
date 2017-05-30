@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Xml;
 using CommonSenseCSharp.datastructures;
-using CommonSenseCSharp.extensions;
 using JetBrains.Annotations;
 
 public static class DictonaryUtil

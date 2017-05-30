@@ -21,7 +21,7 @@ namespace CommonSenseCSharp.extensions {
         public static T IfElse<T>(this bool theBool, [NotNull] Func<T> onTrue, [NotNull] Func<T> onFalse) => theBool ? onTrue() : onFalse();
 
         [NotNull]
-        public static T IfElseSafe<T>(this bool theBool, [NotNull] Func<T> onTrue, [NotNull] Func<T> onFalse) => (theBool ? onTrue() : onFalse());
+        public static T IfElseSafe<T>(this bool theBool, [NotNull] Func<T> onTrue, [NotNull] Func<T> onFalse) => theBool ? onTrue() : onFalse();
 
         public static void IfElseSafeVoid<T>(this bool theBool,
             [NotNull] T value,
@@ -33,17 +33,14 @@ namespace CommonSenseCSharp.extensions {
                 onFalse(value);
             }
         }
+
         public static void IfElseSafeVoid<T>(this bool theBool,
             [NotNull] T value,
             [NotNull] Action<T> onTrue,
-            [NotNull] Action onFalse)
-        {
-            if (theBool)
-            {
+            [NotNull] Action onFalse) {
+            if (theBool) {
                 onTrue(value);
-            }
-            else
-            {
+            } else {
                 onFalse();
             }
         }

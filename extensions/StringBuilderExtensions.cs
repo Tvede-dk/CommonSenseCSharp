@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 
 namespace CommonSenseCSharp.extensions{
     public static class StringBuilderExtensions{

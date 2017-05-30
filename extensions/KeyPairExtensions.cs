@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CommonSenseCSharp.datastructures;
-using JetBrains.Annotations;
 
 namespace CommonSenseCSharp.extensions {
     public static class KeyPairExtensions {

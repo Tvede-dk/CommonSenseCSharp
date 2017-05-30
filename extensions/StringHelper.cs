@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using JetBrains.Annotations;
-using Microsoft.VisualBasic;
 
 public static class StringBuilderExtensions {
     /// <summary>
