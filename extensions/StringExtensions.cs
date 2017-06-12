@@ -2,7 +2,7 @@
 using System.Text;
 using JetBrains.Annotations;
 
-public static class StringBuilderExtensions {
+public static class StringExtensions {
     /// <summary>
     /// chops off the request amount of chars, and if not possible (eg the stringbuilder does not have that many chars) it returns an empty string.
     /// </summary>
@@ -22,7 +22,7 @@ public static class StringBuilderExtensions {
     //// length - the number of characters to be removed before inserting
     //// replace - the string that is replacing characters
     public static string ReplaceAt(this string str, int index, int length, string replace) => str.Remove(index, Math.Min(length, str.Length - index))
-            .Insert(index, replace ?? "");
+        .Insert(index, replace ?? "");
 
     public static string AppendIf(this string str, string otherStr, bool shouldAppend) {
         if (shouldAppend) {
@@ -67,4 +67,9 @@ public static class StringBuilderExtensions {
     public static bool ContainsAll([NotNull] this string str, [NotNull] params string[] strs) =>
         //TODO use a better impl, as this is pretty slow.
         strs.FlatMap(str.Contains).FlatFlattern(true, (x, y) => x &= y);
+
+    [NotNull]
+    public static byte[] ToUtf8Bytes([NotNull] this string str) {
+        return Encoding.UTF8.GetBytes(str);
+    }
 }

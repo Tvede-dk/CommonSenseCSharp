@@ -59,7 +59,7 @@
     <Compile Include="extensions\ObjectExtensions.cs" />
     <Compile Include="extensions\PrimitiveExtensions.cs" />
     <Compile Include="extensions\StringBuilderExtensions.cs" />
-    <Compile Include="extensions\StringHelper.cs" />
+    <Compile Include="extensions\StringExtensions.cs" />
     <Compile Include="extensions\TaskExtensions.cs" />
     <Compile Include="interfaces\IClone.cs" />
     <Compile Include="naturalSorting\NaturalSorter.cs" />
